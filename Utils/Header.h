@@ -1,7 +1,10 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include <string>
 #include <vector>
+#include <ctime>
 
 #if defined(_WIN32) || defined(_WIN64)
 #define CLS system("cls");
