@@ -17,20 +17,21 @@ private:
 public:
 	User(string username, string password);
 
-	~User();
-
+	// getters
 	string getUserName();
 
 	string getPassword();
 
 	vector<Event> getPosts();
 
+	// setters
 	void setUserName(string username);
 
 	void setPassword(string password);
 
 	void setPosts(Event events);
 
+	// other
 	friend istream & operator >> (istream &input, User &user);
 
 	friend ostream & operator << (ostream &output, User &user);

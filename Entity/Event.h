@@ -19,9 +19,10 @@ private:
 	vector<Comment> comments;
 	int popularity;
 	Priorities priority;
-	Event();
 
 public:
+	Event();
+
 	Event(string title, string plot, string shortPlot, string date, Priorities priority, string author);
 
 	//getters
@@ -39,6 +40,8 @@ public:
 
 	string getAuthor();
 
+	vector<Comment> getComments();
+
 	// setters
 	void setTitle(string title);
 
@@ -52,7 +55,12 @@ public:
 
 	void setPriority(Priorities priority);
 
+	void setComment(Comment newComment);
+
+	// other
 	friend istream & operator >> (istream &input, Event &event);
 
 	friend ostream & operator << (ostream &output, Event &event);
+
+	bool operator== (const Event &rightVal);
 };

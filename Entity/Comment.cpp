@@ -1,9 +1,17 @@
 #include"Header.h"
 #include "User.h"
 #include"Comment.h"
+#include "Functions.h"
 
 using namespace std;
 
+
+Comment::Comment()
+{
+	this->plotComment = "";
+	this->author = "";
+	this->date = "";
+}
 
 Comment::Comment(string author, string plotComment, string date)
 {
@@ -46,16 +54,14 @@ istream & operator >> (istream &input, Comment &comment)
 {
 	cout << "Comment: ";
 	getline(input, comment.plotComment);
-	cout << "Date: ";
-	input >> comment.date;
-
+	
 	return input;
 }
 
 ostream & operator << (ostream &output, Comment &comment)
 {
-	output << comment.plotComment << endl;
-	output << comment.date << comment.author << endl;
+	output << "  " << comment.plotComment << endl;
+	output << "  " << comment.date << "   " << comment.author << endl;
 	
 	return output;
 }

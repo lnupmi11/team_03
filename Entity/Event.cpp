@@ -1,6 +1,8 @@
 #include "Header.h"
 #include "Event.h"
 
+using namespace std;
+
 
 Event::Event() {}
 
@@ -13,8 +15,6 @@ Event::Event(string title, string plot, string shortPlot, string date, Prioritie
 	this->priority = priority;
 	this->author = author;
 }
-
-//getters
 
 string Event::getAuthor()
 {
@@ -51,7 +51,11 @@ Priorities Event::getPriority()
 	return this->priority;
 }
 
-// setters
+vector<Comment> Event::getComments()
+{
+	return comments;
+}
+
 void Event::setTitle(string title)
 {
 	this->title = title;
@@ -80,6 +84,11 @@ void Event::setPopularity(int popularity)
 void Event::setPriority(Priorities priority)
 {
 	this->priority = priority;
+}
+
+void Event::setComment(Comment newComment)
+{
+	this->comments.push_back(newComment);
 }
 
 istream & operator >> (istream &input, Event &event)
@@ -132,4 +141,38 @@ ostream & operator << (ostream &output, Event &event)
 	output << "Author: " << event.getAuthor() << "  Date: " << event.getDate() << endl;
 
 	return output;
+}
+
+bool Event::operator== (const Event &rightVal)
+{
+	if (this->title != rightVal.title)
+	{
+		return false;
+	}
+	if (this->date != rightVal.date)
+	{
+		return false;
+	}
+	if (this->plot != rightVal.plot)
+	{
+		return false;
+	}
+	if (this->shortPlot != rightVal.shortPlot)
+	{
+		return false;
+	}
+	if (this->author != rightVal.author)
+	{
+		return false;
+	}
+	if (this->popularity != rightVal.popularity)
+	{
+		return false;
+	}
+	if (this->priority != rightVal.priority)
+	{
+		return false;
+	}
+
+	return true;
 }

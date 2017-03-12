@@ -10,12 +10,11 @@ User::User(string username, string password)
 	this->password = password;
 }
 
-User::~User() {};
-
 string User::getUserName()
 {
 	return this->username;
 }
+
 string User::getPassword()
 {
 	return this->password;
@@ -30,6 +29,7 @@ void User::setUserName(string username)
 {
 	this->username = username;
 }
+
 void User::setPassword(string password)
 {
 	this->password = password;
