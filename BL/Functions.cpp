@@ -6,126 +6,289 @@
 using namespace std;
 
 
-void removeMenu(User &user, vector<Event> &events)
+string getCurrentDate()
 {
-	system("CLS");
+	time_t dateGet(NULL);
+	time(&dateGet);
 
-	cout << "User: " << user.getUserName() << endl;
-	cout << "Removing of your event" << endl;
-	cout << "Event list:" << endl;
+	struct tm * dateStruct;
+	char dateCurrent[100];
 
-	for (int i = 0; i < events.size(); i++)
-	{
-		cout << " " << i + 1 << " - " << events[i].getTitle() << endl;
-	}
-	cout << " " << events.size() + 1 << " - " << "Back" << endl;
-	cout << endl;
+	dateStruct = localtime(&dateGet);
+
+	strftime(dateCurrent, 100, "%d/%m/%Y", dateStruct);
+
+	return dateCurrent;
 }
 
-void mainMenu()
+int mainMenu(vector<User> &allUsers, vector<Event> &allEvents)
 {
-	cout << "Welcome" << endl;
-	cout << "To start working you need to sign in of sign up" << endl;
+	int option;
 
-	cout << "Option list:" << endl;
-	cout << " 1 - Sign in" << endl;
-	cout << " 2 - Sign up" << endl;
-	cout << " 3 - Quit" << endl;
-}
+	printMainMenu();
 
-int eventReview(Event userEvent)
-{
-	system("CLS");
-	cout << " Title: " << userEvent.getTitle() << endl;
-	cout << " Plot:" << endl;
-	cout << userEvent.getPlot() << endl;
-
-	int endReview;
 	while (true)
 	{
-		cout << "1 - back to list" << endl;
-		cout << " Option > ";
-		cin >> endReview;
+		cout << "Option > ";
+		cin >> option;
 
-		if (endReview == 1)
+		switch (option)
 		{
-			system("CLS");
+		case 1:
+			signIn(allUsers, allEvents);
+			printMainMenu();
+			break;
+		case 2:
+			signUp(allUsers);
+			printMainMenu();
+			break;
+		case 3:
+			return 0;
+			break;
+		default:
+			cout << "Incorrect option." << endl;
+			break;
+		}
+	}
+
+	return 0;
+}
+
+void signIn(vector<User> &allUsers, vector<Event> &allEvents)
+{
+	string login;
+	string password;
+
+	bool checkEntry = false;
+
+	cout << "Enter login > ";
+	cin >> login;
+	cout << "Enter password > ";
+	cin >> password;
+
+	for (int i = 0; i < allUsers.size(); i++)
+	{
+		if (login == allUsers[i].getUserName() && password == allUsers[i].getPassword())
+		{
+			checkEntry = true;
+			userMenu(allUsers[i], allUsers[i].getPosts(), allEvents, allUsers);
+			break;
+		}
+	}
+
+	if (checkEntry == false)
+	{
+		CLS;
+		cout << "Error: Wrong login or password" << endl;
+	}
+}
+
+void signUp(vector<User> &allUsers)
+{
+	string userName;
+	string password;
+
+	cout << "Creating new user account" << endl;
+
+	cout << "Enter new username > ";
+	cin >> userName;
+	cout << "Enter new password > ";
+	cin >> password;
+
+	bool isCreated = true;
+
+	for (int i = 0; i < allUsers.size(); i++)
+	{
+		if (userName == allUsers[i].getUserName())
+		{
+			isCreated = false;
+			break;
+		}
+	}
+
+	if (isCreated == true)
+	{
+		User newUser(userName, password);
+
+		//TODO newUser
+
+		allUsers.push_back(newUser);
+
+		CLS;
+		cout << "Your account has been created" << endl;
+	}
+	else
+	{
+		CLS;
+		cout << "Error: User with username " << userName << " already exists" << endl;
+	}
+}
+
+int userMenu(User &currentUser, vector<Event> &currentUserEvents, vector<Event> &allEvents, vector<User> &allUsers)
+{
+	CLS;
+
+	cout << "Welcome " << currentUser.getUserName() << endl;
+
+	while (true)
+	{
+		cout << "   Menu" << endl;
+
+		cout << " Options:" << endl;
+		cout << "\t1 - Review all events" << endl;
+		cout << "\t2 - Review my events" << endl;
+		cout << "\t3 - Create new event" << endl;
+		cout << "\t4 - Update event" << endl;
+		cout << "\t5 - Remove event" << endl;
+		cout << "\t6 - Sign out" << endl;
+
+		int option;
+
+		cout << "Option > ";
+		cin >> option;
+
+		switch (option)
+		{
+		case 1:
+			allEventsMenu(currentUser, allEvents, currentUserEvents, allUsers);
+			break;
+		case 2:
+			userEventsMenu(currentUser, currentUserEvents);
+			break;
+		case 3:
+			createEvent(currentUser, currentUserEvents, allEvents);
+			break;
+		case 4:
+			updateEvent(currentUser, currentUserEvents);
+			break;
+		case 5:
+			removeEvent(currentUser, currentUserEvents);
+			break;
+		case 6:
+			CLS;
+			return 0;
+			break;
+		default:
+			cout << "Error: Wrong option" << endl;
+			break;
+		}
+	}
+	return 0;
+}
+
+int allEventsMenu(User &currentUser, vector<Event> &allEvents, vector<Event> &currentUserEvents, vector<User> &allUsers)
+{
+	CLS;
+
+	int pageNumber = 1;
+
+	printPageWithEvents(pageNumber, allEvents);
+
+	int option;
+
+	printAllEventMenu();
+	cout << " Option > ";
+	cin >> option;
+
+	while (true)
+	{
+		if (option >= 1 && option <= 3)
+		{
+			if (((pageNumber - 1) * 3 + option - 1) < allEvents.size())
+			{
+				eventReview(currentUser, allEvents[(pageNumber - 1) * 3 + option - 1], currentUserEvents, allEvents, allUsers);
+				printPageWithEvents(pageNumber, allEvents);
+			}
+			else
+			{
+				printPageWithEvents(pageNumber, allEvents);
+				cout << "Error: Wrong option" << endl;
+			}
+		}
+		else if (option == 4)
+		{
+			pageNumber--;
+			if (pageNumber < 1)
+			{
+				pageNumber = 1;
+			}
+			printPageWithEvents(pageNumber, allEvents);
+		}
+		else if (option == 5)
+		{
+			pageNumber++;
+			if (pageNumber > (allEvents.size() / 3 + 1))
+			{
+				pageNumber = allEvents.size() / 3 + 1;
+			}
+			printPageWithEvents(pageNumber, allEvents);
+		}
+		else if (option == 6)
+		{
+			CLS;
 			return 0;
 		}
 		else
 		{
-			cout << "Wrong option." << endl;
+			printPageWithEvents(pageNumber, allEvents);
+			cout << "Error: Wrong option" << endl;
 		}
-	}
-	return 0;
-}
 
-int reviewAllEvents(const User &user, vector<Event> &events)
-{
-	system("CLS");
-
-	int pageNumber = 0;
-
-	for (int i = (pageNumber - 1) * 3; i <= (pageNumber - 1) * 3 + 2; i++)
-	{
-		if (i >= events.size())
-		{
-			break;
-		}
-		cout << events[i].getTitle() << endl;
-		cout << events[i].getShortPlot() << endl;
-		cout << events[i].getDate() << events[i].getAuthor() << endl;
+		printAllEventMenu();
+		cout << " Option > ";
+		cin >> option;
 	}
 
 	return 0;
 }
 
-int userEventsMenu(User &user, vector<Event> &events)
+int userEventsMenu(User &currentUser, vector<Event> &currentUserEvents)
 {
-	system("CLS");
+	CLS;
+
 	while (true)
 	{
-		cout << "User: " << user.getUserName() << endl;
+		cout << "User: " << currentUser.getUserName() << endl;
 		cout << "List of your events:" << endl;
 
-		for (int i = 0; i < events.size(); i++)
+		for (int i = 0; i < currentUserEvents.size(); i++)
 		{
 			cout << i + 1 << ":" << endl;
-			cout << " Title: " << events[i].getTitle() << endl;
-			cout << " Short plot: " << events[i].getShortPlot() << endl;
-			cout << " Date: " << events[i].getDate() << endl;
+			cout << " Title: " << currentUserEvents[i].getTitle() << endl;
+			cout << " Short plot: " << currentUserEvents[i].getShortPlot() << endl;
+			cout << " Date: " << currentUserEvents[i].getDate() << endl;
 			cout << endl;
 		}
 
 		int option;
 
-		cout << "Choose event for a full review. (Back to list - " << events.size() + 1 << ")" << endl;
+		cout << "Choose event for a full review. (Back to list - " << currentUserEvents.size() + 1 << ")" << endl;
 		cout << " Option > ";
 		cin >> option;
 
-		if (option >= 1 && option <= events.size())
+		if (option >= 1 && option <= currentUserEvents.size())
 		{
-			eventReview(events[option - 1]);
+			userEventReview(currentUserEvents[option - 1]);
 		}
-		else if (option == (events.size() + 1))
+		else if (option == (currentUserEvents.size() + 1))
 		{
-			system("CLS");
+			CLS;
 			return 0;
 		}
 		else
 		{
-			system("CLS");
-			cout << "Option error. Wrong option." << endl;
+			CLS;
+			cout << "Error. Wrong option." << endl;
 		}
 	}
 	return 0;
 }
 
-void createEvent(User &user, vector<Event> &events)
+void createEvent(User &currentUser, vector<Event> &currentUserEvents, vector<Event> &allEvents)
 {
 	cin.ignore(1024, '\n');
 
-	system("CLS");
+	CLS;
 
 	string title;
 	string date;
@@ -133,9 +296,9 @@ void createEvent(User &user, vector<Event> &events)
 	string shortPlot;
 	Priorities priority;
 
-	cout << "User: " << user.getUserName() << endl;
+	cout << "User: " << currentUser.getUserName() << endl;
 	cout << "Creation of new event" << endl;
-	
+
 	cout << " Title: ";
 	getline(cin, title);
 	cout << " Short plot: ";
@@ -173,22 +336,22 @@ void createEvent(User &user, vector<Event> &events)
 		}
 	}
 
-	cout << " Current date: ";
-	getline(cin, date);
+	date = getCurrentDate();
 
-	Event newEvent(title, plot, shortPlot, date, priority, user.getUserName());
+	Event newEvent(title, plot, shortPlot, date, priority, currentUser.getUserName());
 
-	//TODO create newEvent
+	//TODO create 'newEvent'
 
-	events.push_back(newEvent);
+	currentUserEvents.push_back(newEvent);
+	allEvents.push_back(newEvent);
 
-	system("CLS");
+	CLS;
 	cout << "New event has been created" << endl;
 }
 
-void updateEvent(User &user, vector<Event> &events)
+void updateEvent(User &currentUser, vector<Event> &currentUserEvents)
 {
-	system("CLS");
+	CLS;
 
 	string titleCheck;
 	string title;
@@ -197,15 +360,15 @@ void updateEvent(User &user, vector<Event> &events)
 	string shortPlot;
 	Priorities priority;
 
-	cout << "User: " << user.getUserName() << endl;
+	cout << "User: " << currentUser.getUserName() << endl;
 	cout << "Updating of your event" << endl;
 	cout << "Event list:" << endl;
 
-	for (int i = 0; i < events.size(); i++)
+	for (int i = 0; i < currentUserEvents.size(); i++)
 	{
-		cout << " " << i + 1 << " - " << events[i].getTitle() << endl;
+		cout << " " << i + 1 << " - " << currentUserEvents[i].getTitle() << endl;
 	}
-	cout << " " << events.size() + 1 << " - " << "Back" << endl;
+	cout << " " << currentUserEvents.size() + 1 << " - " << "Back" << endl;
 	cout << endl;
 
 	int optionEvent;
@@ -217,21 +380,21 @@ void updateEvent(User &user, vector<Event> &events)
 
 		cin.ignore(1024, '\n');
 
-		if (optionEvent >= 1 && optionEvent <= events.size())
+		if (optionEvent >= 1 && optionEvent <= currentUserEvents.size())
 		{
-			if (user.getUserName() == events[optionEvent - 1].getAuthor())
+			if (currentUser.getUserName() == currentUserEvents[optionEvent - 1].getAuthor())
 			{
 				cout << " New title: ";
 				getline(cin, title);
-				events[optionEvent - 1].setTitle(title);
+				currentUserEvents[optionEvent - 1].setTitle(title);
 
 				cout << " New short plot: ";
 				getline(cin, shortPlot);
-				events[optionEvent - 1].setShortPlot(shortPlot);
+				currentUserEvents[optionEvent - 1].setShortPlot(shortPlot);
 
 				cout << " New plot: ";
 				getline(cin, plot);
-				events[optionEvent - 1].setPlot(plot);
+				currentUserEvents[optionEvent - 1].setPlot(plot);
 
 				int choosePrior = 0;
 
@@ -263,32 +426,32 @@ void updateEvent(User &user, vector<Event> &events)
 						break;
 					}
 				}
-				events[optionEvent - 1].setPriority(priority);
+				currentUserEvents[optionEvent - 1].setPriority(priority);
 
-				cout << " Current date: ";
-				getline(cin, date);
-				events[optionEvent - 1].setDate(date);
+				date = getCurrentDate();
 
-				//TODO update events[optionEvent - 1]
+				currentUserEvents[optionEvent - 1].setDate(date);
+
+				//TODO update currentUserEvents[optionEvent - 1]
 
 				cout << "Event has been updated." << endl;
 			}
 			else
 			{
-				cout << "Update error. Wrong event or author." << endl;
+				cout << "Error. Wrong event or author." << endl;
 			}
 		}
-		else if (optionEvent == (events.size() + 1))
+		else if (optionEvent == (currentUserEvents.size() + 1))
 		{
-			system("CLS");
+			CLS;
 			break;
 		}
 	}
 }
 
-void removeEvent(User &user, vector<Event> &events)
+void removeEvent(User &currentUser, vector<Event> &currentUserEvents)
 {
-	removeMenu(user, events);
+	printRemoveMenu(currentUser, currentUserEvents);
 
 	int optionEvent;
 
@@ -297,144 +460,194 @@ void removeEvent(User &user, vector<Event> &events)
 		cout << " Choose event to remove > ";
 		cin >> optionEvent;
 
-		if (optionEvent >= 1 && optionEvent <= events.size())
+		if (optionEvent >= 1 && optionEvent <= currentUserEvents.size())
 		{
-			if (user.getUserName() == events[optionEvent - 1].getAuthor())
+			if (currentUser.getUserName() == currentUserEvents[optionEvent - 1].getAuthor())
 			{
-				events.erase(events.begin() + (optionEvent - 1));
+				currentUserEvents.erase(currentUserEvents.begin() + (optionEvent - 1));
 
-				//TODO delete events[optionEvent - 1]
+				//TODO delete currentUserEvents[optionEvent - 1]
 
-				removeMenu(user, events);
+				printRemoveMenu(currentUser, currentUserEvents);
 				cout << "Event has been removed." << endl;
 			}
 			else
 			{
-				cout << "Removing error. Wrong event." << endl;
+				cout << "Error: Wrong event." << endl;
 			}
 		}
-		else if (optionEvent == events.size() + 1)
+		else if (optionEvent == currentUserEvents.size() + 1)
 		{
 			break;
 		}
 	}
-	system("CLS");
+	CLS;
 }
 
-int userMenu(User &user, vector<Event> &events)
+int eventReview(User &currentUser, Event &globalEvent, vector<Event> &currentUserEvents, vector<Event> &allEvents, vector<User> &allUsers)
 {
-	system("CLS");
+	CLS;
 
-	cout << "Welcome " << user.getUserName() << endl;
+	cout << "Title: " << globalEvent.getTitle() << endl;
+	cout << "Plot:" << endl;
+	cout << " " << globalEvent.getPlot() << endl;
+	for (int i = 0; i < globalEvent.getComments().size(); i++)
+	{
+		cout << "Comments:" << endl;
+		cout << " " << i + 1 << ":" << endl;
+		cout << globalEvent.getComments()[i] << endl;
+	}
 
+	int option;
 	while (true)
 	{
-		cout << "   Menu" << endl;
-
-		cout << " Options:" << endl;
-		cout << "\t1 - Review my events" << endl;
-		cout << "\t2 - Create new event" << endl;
-		cout << "\t3 - Update event" << endl;
-		cout << "\t4 - Remove event" << endl;
-		cout << "\t5 - Sign out" << endl;
-
-		int option;
-
-		cout << "Option > ";
+		cout << "1 - add comment" << endl;
+		cout << "2 - back to list" << endl;
+		cout << " Option > ";
 		cin >> option;
 
 		switch (option)
 		{
 		case 1:
-			userEventsMenu(user, events);
+			addComment(currentUser, globalEvent, currentUserEvents, allEvents, allUsers);
+			cout << "Comment has been added" << endl;
 			break;
 		case 2:
-			createEvent(user, events);
-			break;
-		case 3:
-			updateEvent(user, events);
-			break;
-		case 4:
-			removeEvent(user, events);
-			break;
-		case 5:
-			system("CLS");
+			CLS;
 			return 0;
 			break;
 		default:
-			cout << "Option error. Wrong option." << endl;
+			cout << "Error: Wrong option" << endl;
 			break;
 		}
 	}
 	return 0;
 }
 
-void signUp(vector<User> &users)
+int userEventReview(Event &currentUserEvent)
 {
-	string userName;
-	string password;
+	CLS;
 
-	cout << "Creating new user account" << endl;
+	cout << " Title: " << currentUserEvent.getTitle() << endl;
+	cout << " Plot:" << currentUserEvent.getPlot() << endl;
 
-	cout << "Enter new username > ";
-	cin >> userName;
-	cout << "Enter new password > ";
-	cin >> password;
-	
-	bool isCreated = true;
-
-	for (int i = 0; i < users.size(); i++)
+	for (int i = 0; i < currentUserEvent.getComments().size(); i++)
 	{
-		if (userName == users[i].getUserName())
+		cout << "Comments:" << endl;
+		cout << " " << i + 1 << ":" << endl;
+		cout << currentUserEvent.getComments()[i] << endl;
+	}
+
+	int option;
+
+	while (true)
+	{
+		cout << "1 - back to list" << endl;
+		cout << " Option > ";
+		cin >> option;
+
+		if (option == 1)
 		{
-			isCreated = false;
-			break;
+			CLS;
+			return 0;
+		}
+		else
+		{
+			cout << "Error: Wrong option" << endl;
+		}
+	}
+	return 0;
+}
+
+void addComment(User &currentUser, Event &globalEvent, vector<Event> &currentUserEvents, vector<Event> &allEvents, vector<User> &allUsers)
+{
+	cin.ignore(1024, '\n');
+
+	string plotComment;
+	string date;
+	string author;
+
+	cout << "Comment: ";
+	getline(cin, plotComment);
+
+	date = getCurrentDate();
+	author = currentUser.getUserName();
+
+	Comment newComment(author, plotComment, date);
+
+	globalEvent.setComment(newComment);
+
+	for (int i = 0; i < currentUser.getPosts().size(); i++)
+	{
+		if (globalEvent == currentUser.getPosts()[i])
+		{
+			currentUserEvents[i].setComment(newComment);
 		}
 	}
 
-	if (isCreated == true)
+	//TODO create 'newComment'
+}
+
+
+void printPageWithEvents(int pageNumber, vector<Event> &allEvents)
+{
+	CLS;
+
+	int numberOfEvent = 0;
+
+	cout << "Page #" << pageNumber << endl;
+	cout << endl;
+
+	for (int i = (pageNumber - 1) * 3; i <= (pageNumber - 1) * 3 + 2; i++)
 	{
-		User newUser(userName, password);
+		if (i >= allEvents.size())
+		{
+			break;
+		}
+		numberOfEvent++;
 
-		//TODO newUser
-
-		users.push_back(newUser);
-
-		system("CLS");
-		cout << "Your account has been created" << endl;
-	}
-	else
-	{
-		system("CLS");
-		cout << "Creation error. User with username " << userName << " already exists." << endl;
+		cout << numberOfEvent << ") ";
+		cout << "Title: " << allEvents[i].getTitle() << endl;
+		cout << endl;
+		cout << "   Short plot: " << allEvents[i].getShortPlot() << endl;
+		cout << endl;
+		cout << "   Date: " << allEvents[i].getDate() << "   Author: " << allEvents[i].getAuthor() << endl;
+		cout << endl;
+		cout << endl;
 	}
 }
 
-void signIn(vector<User> &users, vector<Event> &events)
+void printRemoveMenu(User &currentUser, vector<Event> &currentUserEvents)
 {
-	string login;
-	string password;
+	CLS;
 
-	bool checkEntry = false;
+	cout << "User: " << currentUser.getUserName() << endl;
+	cout << "Removing of your event" << endl;
+	cout << "Event list:" << endl;
 
-	cout << "Enter login > ";
-	cin >> login;
-	cout << "Enter password > ";
-	cin >> password;
-
-	for (int i = 0; i < users.size(); i++)
+	for (int i = 0; i < currentUserEvents.size(); i++)
 	{
-		if (login == users[i].getUserName() && password == users[i].getPassword())
-		{
-			checkEntry = true;
-			userMenu(users[i], users[i].getPosts());
-			break;
-		}
+		cout << " " << i + 1 << " - " << currentUserEvents[i].getTitle() << endl;
 	}
+	cout << " " << currentUserEvents.size() + 1 << " - " << "Back" << endl;
+	cout << endl;
+}
 
-	if (checkEntry == false)
-	{
-		system("CLS");
-		cout << "Entry error. Wrong login or password." << endl;
-	}
+void printMainMenu()
+{
+	cout << "Welcome" << endl;
+	cout << "To start working you need to sign in of sign up" << endl;
+
+	cout << "Option list:" << endl;
+	cout << " 1 - Sign in" << endl;
+	cout << " 2 - Sign up" << endl;
+	cout << " 3 - Quit" << endl;
+}
+
+void printAllEventMenu()
+{
+	cout << "Choose number of event to review or one of the following options:" << endl;
+	cout << "4 - Previous page" << endl;
+	cout << "5 - Next page" << endl;
+	cout << "6 - Back" << endl;
 }
