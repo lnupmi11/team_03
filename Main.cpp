@@ -1,7 +1,7 @@
-#include "Header.h"
-#include "User.h"
-#include "Event.h"
-#include "Functions.h"
+#include "Utils/Header.h"
+#include "Entity/User.h"
+#include "Entity/Event.h"
+#include "BL/Functions.h"
 
 using namespace std;
 

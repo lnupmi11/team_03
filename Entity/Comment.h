@@ -1,5 +1,5 @@
 #pragma once
-#include "Header.h"
+#include "../Utils/Header.h"
 #include "User.h"
 
 using namespace std;
@@ -20,14 +20,14 @@ public:
 	// getters
 	string getAuthor();
 
-	string getPlot—omment();
+	string getPlotComment();
 
 	string getDate();
 
 	// setters
 	void setAuthor(string author);
 
-	void setPlot—omment(string plotComment);
+	void setPlotComment(string plotComment);
 
 	void setDate(string date);
 

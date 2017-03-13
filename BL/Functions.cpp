@@ -1,6 +1,3 @@
-#include "Header.h"
-#include "User.h"
-#include "Event.h"
 #include "Functions.h"
 
 using namespace std;
@@ -8,7 +5,7 @@ using namespace std;
 
 string getCurrentDate()
 {
-	time_t dateGet(NULL);
+	time_t dateGet(0);
 	time(&dateGet);
 
 	struct tm * dateStruct;
@@ -24,14 +21,16 @@ string getCurrentDate()
 int mainMenu(vector<User> &allUsers, vector<Event> &allEvents)
 {
 	int option;
-
+	CLS;
 	printMainMenu();
 
 	while (true)
 	{
 		cout << "Option > ";
-		cin >> option;
-
+		string input;
+		cin >> input;
+		option = inputToInt(input);
+		
 		switch (option)
 		{
 		case 1:
@@ -46,7 +45,9 @@ int mainMenu(vector<User> &allUsers, vector<Event> &allEvents)
 			return 0;
 			break;
 		default:
-			cout << "Incorrect option." << endl;
+			CLS;
+			cout << "Incorrect option!\n" << endl;
+			printMainMenu();
 			break;
 		}
 	}
@@ -71,7 +72,8 @@ void signIn(vector<User> &allUsers, vector<Event> &allEvents)
 		if (login == allUsers[i].getUserName() && password == allUsers[i].getPassword())
 		{
 			checkEntry = true;
-			userMenu(allUsers[i], allUsers[i].getPosts(), allEvents, allUsers);
+			vector<Event>& userPosts = allUsers[i].getPosts();
+			userMenu(allUsers[i], userPosts, allEvents, allUsers);
 			break;
 		}
 	}
@@ -145,7 +147,9 @@ int userMenu(User &currentUser, vector<Event> &currentUserEvents, vector<Event> 
 		int option;
 
 		cout << "Option > ";
-		cin >> option;
+		string input;
+		cin >> input;
+		option = inputToInt(input);
 
 		switch (option)
 		{
@@ -169,6 +173,7 @@ int userMenu(User &currentUser, vector<Event> &currentUserEvents, vector<Event> 
 			return 0;
 			break;
 		default:
+			CLS;
 			cout << "Error: Wrong option" << endl;
 			break;
 		}
@@ -185,10 +190,11 @@ int allEventsMenu(User &currentUser, vector<Event> &allEvents, vector<Event> &cu
 	printPageWithEvents(pageNumber, allEvents);
 
 	int option;
-
 	printAllEventMenu();
 	cout << " Option > ";
-	cin >> option;
+	string input;
+	cin >> input;
+	option = inputToInt(input);
 
 	while (true)
 	{
@@ -235,8 +241,9 @@ int allEventsMenu(User &currentUser, vector<Event> &allEvents, vector<Event> &cu
 		}
 
 		printAllEventMenu();
-		cout << " Option > ";
-		cin >> option;
+		cout << " Option > ";	
+		cin >> input;
+		option = inputToInt(input);
 	}
 
 	return 0;
@@ -261,10 +268,12 @@ int userEventsMenu(User &currentUser, vector<Event> &currentUserEvents)
 		}
 
 		int option;
+		string input;
 
 		cout << "Choose event for a full review. (Back to list - " << currentUserEvents.size() + 1 << ")" << endl;
 		cout << " Option > ";
-		cin >> option;
+		cin >> input;
+		option = inputToInt(input);
 
 		if (option >= 1 && option <= currentUserEvents.size())
 		{
@@ -313,7 +322,9 @@ void createEvent(User &currentUser, vector<Event> &currentUserEvents, vector<Eve
 	while (checkPrior == false)
 	{
 		cout << " Priority (1 - low, 2 - medium, 3 - high): ";
-		cin >> choosePrior;
+		string input;
+		cin >> input;
+		choosePrior = inputToInt(input);
 		cin.ignore(1024, '\n');
 
 		switch (choosePrior)
@@ -376,7 +387,9 @@ void updateEvent(User &currentUser, vector<Event> &currentUserEvents)
 	while (true)
 	{
 		cout << " Option > ";
-		cin >> optionEvent;
+		string input;
+		cin >> input;
+		optionEvent = inputToInt(input);
 
 		cin.ignore(1024, '\n');
 
@@ -403,7 +416,9 @@ void updateEvent(User &currentUser, vector<Event> &currentUserEvents)
 				while (checkPrior == false)
 				{
 					cout << " New priority (1 - low, 2 - medium, 3 - high): ";
-					cin >> choosePrior;
+					string input;
+					cin >> input;
+					choosePrior = inputToInt(input);
 
 					cin.ignore(1024, '\n');
 
@@ -458,7 +473,9 @@ void removeEvent(User &currentUser, vector<Event> &currentUserEvents)
 	while (true)
 	{
 		cout << " Choose event to remove > ";
-		cin >> optionEvent;
+		string input;
+		cin >> input;
+		optionEvent = inputToInt(input);
 
 		if (optionEvent >= 1 && optionEvent <= currentUserEvents.size())
 		{
@@ -499,12 +516,16 @@ int eventReview(User &currentUser, Event &globalEvent, vector<Event> &currentUse
 	}
 
 	int option;
+	string input;
+	cin >> input;
+	option = inputToInt(input);
 	while (true)
 	{
 		cout << "1 - add comment" << endl;
 		cout << "2 - back to list" << endl;
 		cout << " Option > ";
-		cin >> option;
+		cin >> input;
+		option = inputToInt(input);
 
 		switch (option)
 		{
@@ -544,7 +565,9 @@ int userEventReview(Event &currentUserEvent)
 	{
 		cout << "1 - back to list" << endl;
 		cout << " Option > ";
-		cin >> option;
+		string input;
+		cin >> input;
+		option = inputToInt(input);
 
 		if (option == 1)
 		{
@@ -650,4 +673,16 @@ void printAllEventMenu()
 	cout << "4 - Previous page" << endl;
 	cout << "5 - Next page" << endl;
 	cout << "6 - Back" << endl;
+}
+
+int inputToInt(string input)
+{
+	int result = 0;
+	try{
+		result = stoi(input);
+		return result;
+	}
+	catch(invalid_argument& ex){
+		return result;
+	}
 }

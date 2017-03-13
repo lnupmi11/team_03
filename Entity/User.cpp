@@ -1,4 +1,4 @@
-#include "Header.h"
+#include "../Utils/Header.h"
 #include "User.h"
 
 using namespace std;
@@ -20,7 +20,7 @@ string User::getPassword()
 	return this->password;
 }
 
-vector<Event> User::getPosts()
+vector<Event>& User::getPosts()
 {
 	return posts;
 }

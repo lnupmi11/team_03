@@ -1,7 +1,7 @@
-#include"Header.h"
+#include"../Utils/Header.h"
 #include "User.h"
 #include"Comment.h"
-#include "Functions.h"
+#include "../BL/Functions.h"
 
 using namespace std;
 
@@ -25,7 +25,7 @@ string Comment::getAuthor()
 	return author;
 }
 
-string Comment::getPlotÑomment() 
+string Comment::getPlotComment() 
 {
 	return plotComment;
 }
@@ -40,7 +40,7 @@ void Comment::setAuthor(string author)
 	this->author = author;
 }
 
-void Comment::setPlotÑomment(string plotComment)
+void Comment::setPlotComment(string plotComment)
 {
 	this->plotComment = plotComment;
 }

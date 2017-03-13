@@ -1,6 +1,7 @@
 #pragma once
-#include"Header.h"
-#include "User.h"
+#include"../Utils/Header.h"
+#include "../Entity/User.h"
+#include "../Entity/Event.h"
 
 
 // info:
@@ -61,7 +62,7 @@ void removeEvent(User &currentUser, vector<Event> &currentUserEvents);
 
 // info:
 // Prints menu specially for user.
-int userMenu(User &currentUser, vector<Event> &currentUserEvents, vector<Event> &allEvents, vector<User> &allUsers);
+int userMenu(User& currentUser, vector<Event>& currentUserEvents, vector<Event>& allEvents, vector<User>& allUsers);
 
 // info:
 // New user registration.
@@ -70,3 +71,7 @@ void signUp(vector<User> &allUsers);
 // info:
 // User authorization.
 void signIn(vector<User> &allUsers, vector<Event> &allEvents);
+
+// info:
+// input to int
+int inputToInt(string input);

@@ -1,5 +1,5 @@
 #pragma once
-#include "Header.h"
+#include "../Utils/Header.h"
 #include "Event.h"
 
 using namespace std;
@@ -22,7 +22,7 @@ public:
 
 	string getPassword();
 
-	vector<Event> getPosts();
+	vector<Event>& getPosts();
 
 	// setters
 	void setUserName(string username);
