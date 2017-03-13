@@ -3,7 +3,6 @@
 #include "../Entity/User.h"
 #include "../Entity/Event.h"
 
-
 // info:
 // Generate and return current date of type 'string'.
 string getCurrentDate();

@@ -1,7 +1,8 @@
 #include "Functions.h"
+#include "../Utils/NiceOut.h"
 
 using namespace std;
-
+using namespace niceOut;
 
 string getCurrentDate()
 {
@@ -46,7 +47,7 @@ int mainMenu(vector<User> &allUsers, vector<Event> &allEvents)
 			break;
 		default:
 			CLS;
-			cout << "Incorrect option!\n" << endl;
+			alert("Incorrect option!");
 			printMainMenu();
 			break;
 		}
@@ -129,8 +130,7 @@ void signUp(vector<User> &allUsers)
 int userMenu(User &currentUser, vector<Event> &currentUserEvents, vector<Event> &allEvents, vector<User> &allUsers)
 {
 	CLS;
-
-	cout << "Welcome " << currentUser.getUserName() << endl;
+	printH("Welcome " + currentUser.getUserName());
 
 	while (true)
 	{
@@ -658,21 +658,21 @@ void printRemoveMenu(User &currentUser, vector<Event> &currentUserEvents)
 
 void printMainMenu()
 {
-	cout << "Welcome" << endl;
-	cout << "To start working you need to sign in of sign up" << endl;
+	printH("Welcome");
+	printM("To start working you need to sign in of sign up");
 
-	cout << "Option list:" << endl;
-	cout << " 1 - Sign in" << endl;
-	cout << " 2 - Sign up" << endl;
-	cout << " 3 - Quit" << endl;
+	print("Option list:");
+	print(" 1 - Sign in");
+	print(" 2 - Sign up");
+	print(" 3 - Quit");
 }
 
 void printAllEventMenu()
 {
-	cout << "Choose number of event to review or one of the following options:" << endl;
-	cout << "4 - Previous page" << endl;
-	cout << "5 - Next page" << endl;
-	cout << "6 - Back" << endl;
+	print("Choose number of event to review or one of the following options:");
+	print("4 - Previous page");
+	print("5 - Next page");
+	print("6 - Back");
 }
 
 int inputToInt(string input)
