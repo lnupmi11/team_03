@@ -60,6 +60,10 @@ void updateEvent(User &currentUser, vector<Event> &currentUserEvents);
 void removeEvent(User &currentUser, vector<Event> &currentUserEvents);
 
 // info:
+// Delete current event.
+void removeCurrentEvent(vector<Event> &allEvents, Event &globalEvent);
+
+// info:
 // Prints menu specially for user.
 int userMenu(User& currentUser, vector<Event>& currentUserEvents, vector<Event>& allEvents, vector<User>& allUsers);
 

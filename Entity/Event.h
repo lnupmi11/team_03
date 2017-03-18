@@ -19,7 +19,6 @@ private:
 	vector<Comment> comments;
 	int popularity;
 	Priorities priority;
-
 public:
 	Event();
 

@@ -3,6 +3,7 @@
 
 using namespace std;
 
+User::User() {}
 
 User::User(string username, string password)
 {

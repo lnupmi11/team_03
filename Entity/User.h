@@ -12,9 +12,11 @@ private:
 	string username;
 	string password;
 	vector<Event> posts;
-	User();
 
 public:
+
+	User();
+
 	User(string username, string password);
 
 	// getters

@@ -298,7 +298,7 @@ void createEvent(User &currentUser, vector<Event> &currentUserEvents, vector<Eve
 	cin.ignore(1024, '\n');
 
 	CLS;
-
+	
 	string title;
 	string date;
 	string plot;
@@ -346,7 +346,7 @@ void createEvent(User &currentUser, vector<Event> &currentUserEvents, vector<Eve
 			break;
 		}
 	}
-
+	
 	date = getCurrentDate();
 
 	Event newEvent(title, plot, shortPlot, date, priority, currentUser.getUserName());
@@ -501,6 +501,20 @@ void removeEvent(User &currentUser, vector<Event> &currentUserEvents)
 	CLS;
 }
 
+void removeCurrentEvent(vector<Event> &allEvents, Event &globalEvent)
+{
+	int position;
+	for (int i = 0; i < allEvents.size(); i++)
+	{
+		if (globalEvent == allEvents[i])
+		{
+			position = i;
+			break;
+		}
+	}
+	allEvents.erase(allEvents.begin() + position);
+}
+
 int eventReview(User &currentUser, Event &globalEvent, vector<Event> &currentUserEvents, vector<Event> &allEvents, vector<User> &allUsers)
 {
 	CLS;
@@ -508,21 +522,21 @@ int eventReview(User &currentUser, Event &globalEvent, vector<Event> &currentUse
 	cout << "Title: " << globalEvent.getTitle() << endl;
 	cout << "Plot:" << endl;
 	cout << " " << globalEvent.getPlot() << endl;
+	cout << "Popularity: " << globalEvent.getPopularity() << endl;
 	for (int i = 0; i < globalEvent.getComments().size(); i++)
 	{
 		cout << "Comments:" << endl;
 		cout << " " << i + 1 << ":" << endl;
 		cout << globalEvent.getComments()[i] << endl;
 	}
-
 	int option;
 	string input;
-	cin >> input;
-	option = inputToInt(input);
 	while (true)
 	{
 		cout << "1 - add comment" << endl;
-		cout << "2 - back to list" << endl;
+		cout << "2 - like the event" << endl;
+		cout << "3 - dislike the event" << endl;
+		cout << "4 - back to list" << endl;
 		cout << " Option > ";
 		cin >> input;
 		option = inputToInt(input);
@@ -534,6 +548,20 @@ int eventReview(User &currentUser, Event &globalEvent, vector<Event> &currentUse
 			cout << "Comment has been added" << endl;
 			break;
 		case 2:
+			globalEvent.setPopularity(globalEvent.getPopularity() + 1);
+			eventReview(currentUser, globalEvent, currentUserEvents, allEvents, allUsers);
+			break;
+		case 3:
+			globalEvent.setPopularity(globalEvent.getPopularity() - 1);
+			if (globalEvent.getPopularity() == -5)
+			{
+				removeCurrentEvent(allEvents, globalEvent);
+				cout << "Sorry, but the event was deleted, 'cause of a bad popularity" << endl;
+				system("pause");
+			}
+			eventReview(currentUser, globalEvent, currentUserEvents, allEvents, allUsers);
+			break;
+		case 4:
 			CLS;
 			return 0;
 			break;

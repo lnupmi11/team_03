@@ -4,7 +4,7 @@
 using namespace std;
 
 
-Event::Event() {}
+Event::Event(): popularity(0) {}
 
 Event::Event(string title, string plot, string shortPlot, string date, Priorities priority, string author)
 {
@@ -97,10 +97,32 @@ istream & operator >> (istream &input, Event &event)
 
 	cout << "Title: ";
 	getline(input, event.title);
-	cout << "Short plot: ";
-	getline(input, event.shortPlot);
 	cout << "Plot: ";
 	getline(input, event.plot);
+	unsigned int plotSize;
+	if (event.plot.size() < 135)
+	{
+		plotSize = event.plot.size()-35;
+	}
+	else
+	{
+		plotSize = 100;
+	}
+	string tempShortPlot(event.plot, 0, plotSize);
+	
+	for (int i = plotSize; i < plotSize+36; i++)
+	{
+		tempShortPlot += event.plot[i];
+		if (event.plot[i] == '.')
+		{
+			break;
+		}
+		if (i >= plotSize+25 && event.plot[i]==' ')
+		{
+			tempShortPlot += "...";
+		}
+	}
+	event.shortPlot = tempShortPlot;
 	
 	int choosePrior = 0;
 
@@ -128,8 +150,9 @@ istream & operator >> (istream &input, Event &event)
 		}
 	}
 
-	cout << "Date: ";
-	getline(input, event.date);
+
+	time_t currentTime = time(nullptr);
+	event.date = ctime(&currentTime);
 
 	return input;
 }
@@ -138,7 +161,9 @@ ostream & operator << (ostream &output, Event &event)
 {
 	output << "Title: " << event.getTitle() << endl;
 	output << "Plot: " << event.getPlot() << endl;
-	output << "Author: " << event.getAuthor() << "  Date: " << event.getDate() << endl;
+	output << "Author: " << event.getAuthor() << endl;
+	output << "Date: " << event.getDate() << endl;
+	output << "Populariry: " << event.getPopularity() << endl;
 
 	return output;
 }
