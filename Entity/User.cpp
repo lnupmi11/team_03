@@ -41,7 +41,7 @@ void User::setPosts(Event events)
 	this->posts.push_back(events);
 }
 
-istream & operator >> (istream &input, User &user)
+istream& operator >> (istream& input, User& user)
 {
 	cout << "Enter login > ";
 	input >> user.username;
@@ -51,7 +51,7 @@ istream & operator >> (istream &input, User &user)
 	return input;
 }
 
-ostream & operator << (ostream &output, User &user)
+ostream& operator << (ostream& output, User& user)
 {
 	output << "Username -> ";
 	output << user.username << endl;

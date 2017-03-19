@@ -32,7 +32,7 @@ public:
 	void setDate(string date);
 
 	// other
-	friend istream & operator >> (istream &input, Comment &comment);
+	friend istream& operator >> (istream& input, Comment& comment);
 
-	friend ostream & operator << (ostream &output, Comment &comment);
+	friend ostream& operator << (ostream& output, Comment& comment);
 };

@@ -20,17 +20,17 @@ Comment::Comment(string author, string plotComment, string date)
 	this->date = date;
 };
 
-string Comment::getAuthor() 
+string Comment::getAuthor()
 {
 	return author;
 }
 
-string Comment::getPlotComment() 
+string Comment::getPlotComment()
 {
 	return plotComment;
 }
 
-string Comment::getDate() 
+string Comment::getDate()
 {
 	return date;
 }
@@ -50,18 +50,18 @@ void Comment::setDate(string date)
 	this->date = date;
 }
 
-istream & operator >> (istream &input, Comment &comment)
+istream & operator >> (istream& input, Comment& comment)
 {
 	cout << "Comment: ";
 	getline(input, comment.plotComment);
-	
+
 	return input;
 }
 
-ostream & operator << (ostream &output, Comment &comment)
+ostream & operator << (ostream& output, Comment& comment)
 {
 	output << "  " << comment.plotComment << endl;
 	output << "  " << comment.date << "   " << comment.author << endl;
-	
+
 	return output;
 }

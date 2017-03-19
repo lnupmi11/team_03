@@ -34,7 +34,7 @@ public:
 	void setPosts(Event events);
 
 	// other
-	friend istream & operator >> (istream &input, User &user);
+	friend istream& operator >> (istream& input, User& user);
 
-	friend ostream & operator << (ostream &output, User &user);
+	friend ostream& operator << (ostream& output, User& user);
 };

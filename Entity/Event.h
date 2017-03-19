@@ -1,5 +1,5 @@
 #pragma once
-#include"../Utils/Header.h"
+#include "../Utils/Header.h"
 #include"Comment.h"
 
 using namespace std;
@@ -57,9 +57,11 @@ public:
 	void setComment(Comment newComment);
 
 	// other
-	friend istream & operator >> (istream &input, Event &event);
+	void removeComment(int number);
 
-	friend ostream & operator << (ostream &output, Event &event);
+	friend istream& operator >> (istream& input, Event& event);
 
-	bool operator== (const Event &rightVal);
+	friend ostream& operator << (ostream& output, Event& event);
+
+	bool operator== (const Event& rightVal);
 };

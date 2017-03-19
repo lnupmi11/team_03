@@ -4,7 +4,7 @@
 using namespace std;
 
 
-Event::Event(): popularity(0) {}
+Event::Event() : popularity(0) {}
 
 Event::Event(string title, string plot, string shortPlot, string date, Priorities priority, string author)
 {
@@ -91,7 +91,12 @@ void Event::setComment(Comment newComment)
 	this->comments.push_back(newComment);
 }
 
-istream & operator >> (istream &input, Event &event)
+void Event::removeComment(int number)
+{
+	comments.erase(comments.begin() + number);
+}
+
+istream& operator >> (istream& input, Event& event)
 {
 	cin.ignore(1024, '\n');
 
@@ -102,28 +107,28 @@ istream & operator >> (istream &input, Event &event)
 	unsigned int plotSize;
 	if (event.plot.size() < 135)
 	{
-		plotSize = event.plot.size()-35;
+		plotSize = event.plot.size() - 35;
 	}
 	else
 	{
 		plotSize = 100;
 	}
 	string tempShortPlot(event.plot, 0, plotSize);
-	
-	for (int i = plotSize; i < plotSize+36; i++)
+
+	for (int i = plotSize; i < plotSize + 36; i++)
 	{
 		tempShortPlot += event.plot[i];
 		if (event.plot[i] == '.')
 		{
 			break;
 		}
-		if (i >= plotSize+25 && event.plot[i]==' ')
+		if (i >= plotSize + 25 && event.plot[i] == ' ')
 		{
 			tempShortPlot += "...";
 		}
 	}
 	event.shortPlot = tempShortPlot;
-	
+
 	int choosePrior = 0;
 
 	while (choosePrior != 1 || choosePrior != 2 || choosePrior != 3)
@@ -157,7 +162,7 @@ istream & operator >> (istream &input, Event &event)
 	return input;
 }
 
-ostream & operator << (ostream &output, Event &event)
+ostream& operator << (ostream& output, Event& event)
 {
 	output << "Title: " << event.getTitle() << endl;
 	output << "Plot: " << event.getPlot() << endl;
@@ -168,7 +173,7 @@ ostream & operator << (ostream &output, Event &event)
 	return output;
 }
 
-bool Event::operator== (const Event &rightVal)
+bool Event::operator== (const Event& rightVal)
 {
 	if (this->title != rightVal.title)
 	{
