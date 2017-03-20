@@ -34,3 +34,7 @@ bin/
 # linux makefile
 makefile
 *.swp
+
+#folder to save data in
+data/
+
