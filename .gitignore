@@ -31,8 +31,7 @@
 # bin folder
 bin/
 
-# linux makefile
-makefile
+# vim swap files
 *.swp
 
 #folder to save data in
