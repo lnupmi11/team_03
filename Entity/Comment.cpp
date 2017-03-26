@@ -18,7 +18,7 @@ Comment::Comment(string author, string plotComment, string date)
 	this->author = author;
 	this->plotComment = plotComment;
 	this->date = date;
-};
+}
 
 string Comment::getAuthor()
 {

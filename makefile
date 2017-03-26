@@ -1,10 +1,10 @@
 CC = g++
-CFLAGS  = -g -Werror
+CFLAGS  = -g -Wall -Wno-sign-compare -Wextra -Wformat -Wformat-security -Wpedantic 
 
 default: bin/start
 
-bin/start: Main.o User.o Event.o Comment.o Functions.o #DataParser.o 
-	$(CC) $(CFLAGS) -o bin/start Main.o User.o Event.o Comment.o Functions.o 
+bin/start: Main.o User.o Event.o Comment.o Functions.o NiceOut.o #DataParser.o 
+	$(CC) $(CFLAGS) -o bin/start Main.o User.o Event.o Comment.o Functions.o NiceOut.o
 	$(RM) *.o *~
 
 Main.o: Main.cpp Utils/NiceOut.h Utils/Header.h Entity/User.h Entity/Event.h Entity/Comment.h #DTO/DataParser.h 
@@ -22,8 +22,11 @@ Event.o: Entity/Event.cpp Entity/Event.h Utils/Header.h Entity/Comment.h
 Comment.o: Entity/Comment.cpp Entity/Comment.h Utils/Header.h Entity/User.h
 	$(CC) $(CFLAGS) -c Entity/Comment.cpp
 
-Functions.o: BL/Functions.cpp BL/Functions.h Utils/Header.h Entity/Event.h Entity/User.h
+Functions.o: BL/Functions.cpp BL/Functions.h Utils/Header.h Entity/Event.h Entity/User.h Utils/NiceOut.h
 	$(CC) $(CFLAGS) -c BL/Functions.cpp
+
+NiceOut.o: Utils/NiceOut.h
+	$(CC) $(CFLAGS) -c Utils/NiceOut.cpp
 
 run:
 	./bin/start

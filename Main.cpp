@@ -39,6 +39,7 @@ void testing(vector<User> &users, vector<Event> &allEvents)
 
 int main()
 {
+	cout << "Start OK" << endl;
 	vector<User> allUsers;
 	vector<Event> allEvents;
 
@@ -46,6 +47,7 @@ int main()
 	//TODO push events data to vector<Event> events
 
 	testing(allUsers, allEvents);
+
 
 	for (int i = 0; i < allUsers.size(); i++)
 	{
@@ -58,7 +60,9 @@ int main()
 		}
 	}
 
+	cout << "Before main menu" << endl;
 	mainMenu(allUsers, allEvents);
+	cout << "After main menu" << endl;
 	
 	return 0;
 }

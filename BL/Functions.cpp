@@ -2,7 +2,6 @@
 #include "../Utils/NiceOut.h"
 
 using namespace std;
-using namespace niceOut;
 
 string getCurrentDate()
 {

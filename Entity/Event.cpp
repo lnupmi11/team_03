@@ -156,7 +156,7 @@ istream& operator >> (istream& input, Event& event)
 	}
 
 
-	time_t currentTime = time(nullptr);
+	time_t currentTime = time(0);
 	event.date = ctime(&currentTime);
 
 	return input;
