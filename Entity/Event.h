@@ -1,6 +1,6 @@
 #pragma once
 #include "../Utils/Header.h"
-#include"Comment.h"
+#include "Comment.h"
 
 using namespace std;
 
@@ -18,6 +18,7 @@ private:
 	string author;
 	vector<Comment> comments;
 	int popularity;
+	vector<string> popularityUsers;
 	Priorities priority;
 public:
 	Event();
@@ -35,6 +36,8 @@ public:
 
 	int getPopularity();
 
+	vector<string> getPopularityUsers();
+
 	Priorities getPriority();
 
 	string getAuthor();
@@ -51,6 +54,8 @@ public:
 	void setDate(string date);
 
 	void setPopularity(int popularity);
+
+	void setPopularityUsers(string currentUser);
 
 	void setPriority(Priorities priority);
 

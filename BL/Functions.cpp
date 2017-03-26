@@ -583,23 +583,10 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 			}
 			break;
 		case 3:
-			globalEvent.setPopularity(globalEvent.getPopularity() + 1);
-			CLS;
-			cout << "You liked this event" << endl;
+			like(globalEvent, currentUser);
 			break;
 		case 4:
-			globalEvent.setPopularity(globalEvent.getPopularity() - 1);
-			if (globalEvent.getPopularity() == -5)
-			{
-				removeCurrentEvent(allEvents, globalEvent, currentUserEvents);
-				CLS;
-				cout << "Sorry, but the event was deleted, 'cause of a bad popularity" << endl;
-			}
-			else
-			{
-				CLS;
-				cout << "You disliked this event" << endl;
-			}
+				dislike(globalEvent, currentUser, allEvents, currentUserEvents);
 			break;
 		case 5:
 			CLS;
@@ -824,5 +811,57 @@ bool quit()
 		alert("Incorrect option!");
 		return false;
 		break;
+	}
+}
+
+bool checkUser(Event& currentEvent, User& currentUser)
+{
+	bool check = true;
+
+	for (int i = 0; i < currentEvent.getPopularityUsers().size(); i++)
+	{
+		if (currentUser.getUserName() == currentEvent.getPopularityUsers()[i])
+		{
+			check = false;
+		}
+	}
+
+	return check;
+}
+
+void like(Event& currentEvent, User& currentUser)
+{
+	if (checkUser(currentEvent,currentUser))
+	{
+		currentEvent.setPopularity(currentEvent.getPopularity() + 1);
+		currentEvent.setPopularityUsers(currentUser.getUserName());
+		CLS;
+		cout << "You liked this event" << endl;
+	}
+	else
+	{
+		CLS;
+		cout << "You've already rated this event/n";
+	}
+}
+
+void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, vector<Event>& currentUserEvents)
+{
+	if (checkUser(currentEvent, currentUser))
+	{
+		currentEvent.setPopularity(currentEvent.getPopularity() - 1);
+		currentEvent.setPopularityUsers(currentUser.getUserName());
+		CLS;
+		cout << "You disliked this event" << endl;
+	}
+	else
+	{
+		CLS;
+		cout << "You have already rated this event/n";
+	}
+	if (currentEvent.getPopularity() == -2)
+	{
+		removeCurrentEvent(allEvents, currentEvent, currentUserEvents);
+		cout << "Sorry, but the event was deleted, 'cause of a bad popularity" << endl;
 	}
 }

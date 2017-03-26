@@ -46,6 +46,11 @@ int Event::getPopularity()
 	return this->popularity;
 }
 
+vector<string> Event::getPopularityUsers()
+{
+	return this->popularityUsers;
+}
+
 Priorities Event::getPriority()
 {
 	return this->priority;
@@ -79,6 +84,11 @@ void Event::setDate(string date)
 void Event::setPopularity(int popularity)
 {
 	this->popularity = popularity;
+}
+
+void Event::setPopularityUsers(string currentUser)
+{
+	this->popularityUsers.push_back(currentUser);
 }
 
 void Event::setPriority(Priorities priority)

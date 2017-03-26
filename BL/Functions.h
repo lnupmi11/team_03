@@ -86,3 +86,15 @@ int inputToInt(string input);
 // info:
 // Verification of exit.
 bool quit();
+
+// info:
+// check if current user is in list
+bool checkUser(Event& currentEvent, User& currentUser);
+
+// info:
+// like the event
+void like(Event& currentEvent, User& currentUser);
+
+// info:
+// dislike the event
+void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, vector<Event>& currentUserEvents);
