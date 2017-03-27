@@ -1,4 +1,8 @@
-Week, Orest, Yura, Dmytro, Dana, Anjela, Bogdan
-0, project folder structure, ..., ..., plan of classes, plan of classes, ... 
-1, .gitignore and bug fix, bug fix, small edits, ..., ..., ...
-2, data processing and bug fix, business business logic and bug fix, likes/dislikes short plot, ideas =], ideas =}, ...
+Week, Orest, Yura, Dmytro, Dana, Angela, Bogdan
+0, project folder structure,---,---, plan of classes, plan of classes,---
+1, .gitignore and bug fix, bug fix, small edits,---,---,---
+2, data processing and bug fix, business business logic and bug fix, likes/dislikes short plot, ideas =], ideas =},---
+3,app adjusts to terminal width,comments can be removed,likes/dislikes improved,---,---,replace cout with NiceOut
+4,,,,,,
+5,,,,,,
+6,,,,,,
