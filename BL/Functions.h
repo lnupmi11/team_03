@@ -88,13 +88,17 @@ int inputToInt(string input);
 bool quit();
 
 // info:
-// check if current user is in list
+// check if current user is in list.
 bool checkUser(Event& currentEvent, User& currentUser);
 
 // info:
-// like the event
+// like the event.
 void like(Event& currentEvent, User& currentUser);
 
 // info:
-// dislike the event
+// dislike the event.
 void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, vector<Event>& currentUserEvents);
+
+// info:
+// Deleting of existing user.
+bool deleteUserAccount(vector<User>& allUsers, User& currentUser);

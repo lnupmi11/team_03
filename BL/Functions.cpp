@@ -66,9 +66,9 @@ void signIn(vector<User>& allUsers, vector<Event> & allEvents)
 
 	bool checkEntry = false;
 
-	cout << "Enter login > ";
+	cout << "Login > ";
 	cin >> login;
-	cout << "Enter password > ";
+	cout << "Password > ";
 	cin >> password;
 
 	for (int i = 0; i < allUsers.size(); i++)
@@ -145,7 +145,8 @@ int userMenu(User& currentUser, vector<Event>& currentUserEvents, vector<Event>&
 		cout << "\t3 - Create new event" << endl;
 		cout << "\t4 - Update event" << endl;
 		cout << "\t5 - Remove event" << endl;
-		cout << "\t6 - Sign out" << endl;
+		cout << "\t6 - Delete account" << endl;
+		cout << "\t7 - Sign out" << endl;
 
 		int option;
 
@@ -172,6 +173,18 @@ int userMenu(User& currentUser, vector<Event>& currentUserEvents, vector<Event>&
 			removeEvent(currentUser, currentUserEvents, allEvents);
 			break;
 		case 6:
+			if (deleteUserAccount(allUsers, currentUser))
+			{
+				CLS;
+				cout << "Your account has been deleted successfully!" << endl;
+				return 0;
+			}
+			else
+			{
+				CLS;
+			}
+			break;
+		case 7:
 			CLS;
 			return 0;
 			break;
@@ -585,7 +598,7 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 			like(globalEvent, currentUser);
 			break;
 		case 4:
-				dislike(globalEvent, currentUser, allEvents, currentUserEvents);
+			dislike(globalEvent, currentUser, allEvents, currentUserEvents);
 			break;
 		case 5:
 			CLS;
@@ -830,7 +843,7 @@ bool checkUser(Event& currentEvent, User& currentUser)
 
 void like(Event& currentEvent, User& currentUser)
 {
-	if (checkUser(currentEvent,currentUser))
+	if (checkUser(currentEvent, currentUser))
 	{
 		currentEvent.setPopularity(currentEvent.getPopularity() + 1);
 		currentEvent.setPopularityUsers(currentUser.getUserName());
@@ -840,7 +853,7 @@ void like(Event& currentEvent, User& currentUser)
 	else
 	{
 		CLS;
-		cout << "You've already rated this event/n";
+		cout << "You've already rated this event" << endl;
 	}
 }
 
@@ -856,11 +869,68 @@ void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, v
 	else
 	{
 		CLS;
-		cout << "You have already rated this event/n";
+		cout << "You have already rated this event" << endl;
 	}
 	if (currentEvent.getPopularity() == -2)
 	{
 		removeCurrentEvent(allEvents, currentEvent, currentUserEvents);
 		cout << "Sorry, but the event was deleted, 'cause of a bad popularity" << endl;
+	}
+}
+
+bool deleteUserAccount(vector<User>& allUsers, User& currentUser)
+{
+	CLS;
+	while (true)
+	{
+		cout << "Deleting account:" << endl << endl;
+		cout << "Info:" << endl;
+		cout << " Data about your account will be deleted." << endl;
+		cout << " All your post and commets will be saved." << endl << endl;
+		cout << "Do you really want to delete your account ?" << endl;
+		cout << "\t1 - Yes" << endl;
+		cout << "\t2 - No" << endl;
+		cout << "Option > ";
+
+		int option;
+		string input;
+		cin >> input;
+		option = inputToInt(input);
+
+		string password;
+
+		switch (option)
+		{
+		case 1:
+			cout << endl;
+			cout << "Enter your password to countinue:" << endl;
+			cout << "Password > ";
+			cin >> password;
+
+			if (password == currentUser.getPassword())
+			{
+				int userIndex = 0;
+
+				while (allUsers[userIndex].getPassword() != password)
+				{
+					userIndex++;
+				}
+				allUsers.erase(allUsers.begin() + userIndex);
+				return true;
+			}
+			else
+			{
+				CLS;
+				cout << "Incorrect password!" << endl;
+			}
+			break;
+		case 2:
+			return false;
+			break;
+		default:
+			CLS;
+			cout << "Incorrect option!" << endl;
+			break;
+		}
 	}
 }
