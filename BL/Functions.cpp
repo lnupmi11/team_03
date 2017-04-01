@@ -135,6 +135,8 @@ int userMenu(User& currentUser, vector<Event>& currentUserEvents, vector<Event>&
 	CLS;
 	printH("Welcome " + currentUser.getUserName());
 
+	string deleteMsg;
+
 	while (true)
 	{
 		cout << "   Menu" << endl;
@@ -206,7 +208,7 @@ int allEventsMenu(User& currentUser, vector<Event>& allEvents, vector<Event>& cu
 	printPageWithEvents(pageNumber, allEvents);
 
 	int option;
-	printAllEventMenu();
+	printPageEventMenu();
 	cout << " Option > ";
 	string input;
 	cin >> input;
@@ -219,10 +221,12 @@ int allEventsMenu(User& currentUser, vector<Event>& allEvents, vector<Event>& cu
 			if (((pageNumber - 1) * 3 + option - 1) < allEvents.size())
 			{
 				eventReview(currentUser, allEvents[(pageNumber - 1) * 3 + option - 1], currentUserEvents, allEvents, allUsers);
+				CLS;
 				printPageWithEvents(pageNumber, allEvents);
 			}
 			else
 			{
+				CLS;
 				printPageWithEvents(pageNumber, allEvents);
 				cout << "Error: Wrong option" << endl;
 			}
@@ -234,6 +238,7 @@ int allEventsMenu(User& currentUser, vector<Event>& allEvents, vector<Event>& cu
 			{
 				pageNumber = 1;
 			}
+			CLS;
 			printPageWithEvents(pageNumber, allEvents);
 		}
 		else if (option == 5)
@@ -243,6 +248,7 @@ int allEventsMenu(User& currentUser, vector<Event>& allEvents, vector<Event>& cu
 			{
 				pageNumber = allEvents.size() / 3 + 1;
 			}
+			CLS;
 			printPageWithEvents(pageNumber, allEvents);
 		}
 		else if (option == 6)
@@ -252,11 +258,12 @@ int allEventsMenu(User& currentUser, vector<Event>& allEvents, vector<Event>& cu
 		}
 		else
 		{
+			CLS;
 			printPageWithEvents(pageNumber, allEvents);
 			cout << "Error: Wrong option" << endl;
 		}
 
-		printAllEventMenu();
+		printPageEventMenu();
 		cout << " Option > ";
 		cin >> input;
 		option = inputToInt(input);
@@ -269,33 +276,58 @@ int userEventsMenu(User& currentUser, vector<Event>& currentUserEvents)
 {
 	CLS;
 
+	int pageNumber = 1;
+
+	cout << "List of your events:" << endl;
+	printPageWithEvents(pageNumber, currentUserEvents);
+
+	int option;
+	printPageEventMenu();
+	cout << " Option > ";
+	string input;
+	cin >> input;
+	option = inputToInt(input);
+
 	while (true)
 	{
-		cout << "User: " << currentUser.getUserName() << endl;
-		cout << "List of your events:" << endl;
-
-		for (int i = 0; i < currentUserEvents.size(); i++)
+		if (option >= 1 && option <= 3)
 		{
-			cout << i + 1 << ":" << endl;
-			cout << " Title: " << currentUserEvents[i].getTitle() << endl;
-			cout << " Short plot: " << currentUserEvents[i].getShortPlot() << endl;
-			cout << " Date: " << currentUserEvents[i].getDate() << endl;
-			cout << endl;
+			if (((pageNumber - 1) * 3 + option - 1) < currentUserEvents.size())
+			{
+				userEventReview(currentUserEvents[(pageNumber - 1) * 3 + option - 1]);
+				cout << "List of your events:" << endl;
+				printPageWithEvents(pageNumber, currentUserEvents);
+			}
+			else
+			{
+				cout << "List of your events:" << endl;
+				printPageWithEvents(pageNumber, currentUserEvents);
+				cout << "Error: Wrong option" << endl;
+			}
 		}
-
-		int option;
-		string input;
-
-		cout << "Choose event for a full review. (Back to list - " << currentUserEvents.size() + 1 << ")" << endl;
-		cout << " Option > ";
-		cin >> input;
-		option = inputToInt(input);
-
-		if (option >= 1 && option <= currentUserEvents.size())
+		else if (option == 4)
 		{
-			userEventReview(currentUserEvents[option - 1]);
+			pageNumber--;
+			if (pageNumber < 1)
+			{
+				pageNumber = 1;
+			}
+			CLS;
+			cout << "List of your events:" << endl;
+			printPageWithEvents(pageNumber, currentUserEvents);
 		}
-		else if (option == (currentUserEvents.size() + 1))
+		else if (option == 5)
+		{
+			pageNumber++;
+			if (pageNumber >(currentUserEvents.size() / 3 + 1))
+			{
+				pageNumber = currentUserEvents.size() / 3 + 1;
+			}
+			CLS;
+			cout << "List of your events:" << endl;
+			printPageWithEvents(pageNumber, currentUserEvents);
+		}
+		else if (option == 6)
 		{
 			CLS;
 			return 0;
@@ -303,8 +335,15 @@ int userEventsMenu(User& currentUser, vector<Event>& currentUserEvents)
 		else
 		{
 			CLS;
-			cout << "Error. Wrong option." << endl;
+			cout << "List of your events:" << endl;
+			printPageWithEvents(pageNumber, currentUserEvents);
+			cout << "Error: Wrong option" << endl;
 		}
+
+		printPageEventMenu();
+		cout << " Option > ";
+		cin >> input;
+		option = inputToInt(input);
 	}
 	return 0;
 }
@@ -723,8 +762,6 @@ bool deleteComment(User& currentUser, Event& globalEvent, vector<Event>& current
 
 void printPageWithEvents(int pageNumber, vector<Event>& allEvents)
 {
-	CLS;
-
 	int numberOfEvent = 0;
 
 	cout << "Page #" << pageNumber << endl;
@@ -776,7 +813,7 @@ void printMainMenu()
 	print(" 3 - Quit");
 }
 
-void printAllEventMenu()
+void printPageEventMenu()
 {
 	print("Choose number of event to review or one of the following options:");
 	print("4 - Previous page");

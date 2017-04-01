@@ -25,7 +25,7 @@ void printRemoveMenu(User& currentUser, vector<Event>& currentUserEvents);
 
 // info:
 // Prints menu for all event.
-void printAllEventMenu();
+void printPageEventMenu();
 
 // info:
 // Prints main menu.
