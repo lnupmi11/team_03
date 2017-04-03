@@ -11,15 +11,15 @@ enum Priorities { low, medium, high };
 class Event
 {
 private:
-	string title;
-	string date;
-	string plot;
-	string shortPlot;
-	string author;
+	string title;//
+	string date;//
+	string plot;//
+	string shortPlot;//
+	string author;//
 	vector<Comment> comments;
-	int popularity;
-	vector<string> popularityUsers;
-	Priorities priority;
+	int popularity;//
+	vector<string> popularityUsers;//
+	Priorities priority;//
 public:
 	Event();
 
@@ -55,11 +55,11 @@ public:
 
 	void setPopularity(int popularity);
 
-	void setPopularityUsers(string currentUser);
+	void addPopularityUsers(string currentUser);
 
 	void setPriority(Priorities priority);
 
-	void setComment(Comment newComment);
+	void addComment(Comment newComment);
 
 	// other
 	void removeComment(int number);

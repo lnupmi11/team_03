@@ -86,7 +86,7 @@ void Event::setPopularity(int popularity)
 	this->popularity = popularity;
 }
 
-void Event::setPopularityUsers(string currentUser)
+void Event::addPopularityUsers(string currentUser)
 {
 	this->popularityUsers.push_back(currentUser);
 }
@@ -96,7 +96,7 @@ void Event::setPriority(Priorities priority)
 	this->priority = priority;
 }
 
-void Event::setComment(Comment newComment)
+void Event::addComment(Comment newComment)
 {
 	this->comments.push_back(newComment);
 }

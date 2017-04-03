@@ -3,6 +3,6 @@ Week, Orest, Yura, Dmytro, Dana, Angela, Bogdan
 1, .gitignore and bug fix, bug fix, small edits,---,---,---
 2, data processing and bug fix, business business logic and bug fix, likes/dislikes short plot, ideas =], ideas =},---
 3,app adjusts to terminal width,comments can be removed,likes/dislikes improved,---,---,replace cout with NiceOut
-4,---,---,---,---,---,---
-5,,,,,,
+4,---,account delete and event sort,---,---,---,---
+5,data parse,,,,,
 6,,,,,,

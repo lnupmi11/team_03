@@ -16,8 +16,12 @@ User parseUser(string data);
 
 Event parseEvent(string data);
 
+Comment parseComment(string data);
+
 string composeUser(User user);
 
 string composeEvent(Event event);
+
+string composeComment(Comment event);
 
 vector<string> split(char delim, string toSplit);
