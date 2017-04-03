@@ -19,3 +19,5 @@ Event parseEvent(string data);
 string composeUser(User user);
 
 string composeEvent(Event event);
+
+vector<string> split(char delim, string toSplit);

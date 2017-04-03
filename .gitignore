@@ -37,3 +37,8 @@ bin/
 #folder to save data in
 data/
 
+.suo
+Debug/
+*vcx*
+*sln
+*VC*

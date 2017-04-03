@@ -1,6 +1,5 @@
 #pragma once
 #include "Header.h"
-#include <sys/ioctl.h>
 
 using namespace std;
 
@@ -54,7 +53,7 @@ const char crl =  ')';
 const char crr =  '(';
 #endif
 
-size_t SIZE();
+size_t _SIZE();
 void printM(string str);
 void printH(string str);
 void print(string str);
