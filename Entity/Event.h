@@ -49,7 +49,7 @@ public:
 
 	void setPlot(string plot);
 
-	void  setShortPlot(string shortPlot);
+	void setShortPlot(string shortPlot);
 
 	void setDate(string date);
 

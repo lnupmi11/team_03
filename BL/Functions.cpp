@@ -705,13 +705,13 @@ void addComment(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 
 	Comment newComment(author, plotComment, date);
 
-	globalEvent.setComment(newComment);
+	globalEvent.addComment(newComment);
 
 	for (int i = 0; i < currentUser.getPosts().size(); i++)
 	{
 		if (globalEvent == currentUser.getPosts()[i])
 		{
-			currentUserEvents[i].setComment(newComment);
+			currentUserEvents[i].addComment(newComment);
 		}
 	}
 
@@ -883,7 +883,7 @@ void like(Event& currentEvent, User& currentUser)
 	if (checkUser(currentEvent, currentUser))
 	{
 		currentEvent.setPopularity(currentEvent.getPopularity() + 1);
-		currentEvent.setPopularityUsers(currentUser.getUserName());
+		currentEvent.addPopularityUsers(currentUser.getUserName());
 		CLS;
 		cout << "You liked this event" << endl;
 	}
@@ -899,7 +899,7 @@ void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, v
 	if (checkUser(currentEvent, currentUser))
 	{
 		currentEvent.setPopularity(currentEvent.getPopularity() - 1);
-		currentEvent.setPopularityUsers(currentUser.getUserName());
+		currentEvent.addPopularityUsers(currentUser.getUserName());
 		CLS;
 		cout << "You disliked this event" << endl;
 	}

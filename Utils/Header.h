@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <cstdlib>
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
