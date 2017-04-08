@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS  = -g -Wall -Wno-sign-compare -Wextra -Wformat -Wformat-security -Wpedantic 
+CFLAGS  = -std=c++11 -g -Wall -Wno-sign-compare -Wextra -Wformat -Wformat-security -Wpedantic 
 
 default: bin/start
 
