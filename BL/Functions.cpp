@@ -100,33 +100,51 @@ void signUp(vector<User>& allUsers)
 	cin >> userName;
 	cout << "Enter new password > ";
 	cin >> password;
-
-	bool isCreated = true;
-
-	for (int i = 0; i < allUsers.size(); i++)
+	
+	if (userName.size() <= 3)
 	{
-		if (userName == allUsers[i].getUserName())
-		{
-			isCreated = false;
-			break;
-		}
-	}
-
-	if (isCreated == true)
-	{
-		User newUser(userName, password);
-
-		//TODO newUser
-
-		allUsers.push_back(newUser);
-
 		CLS;
-		cout << "Your account has been created" << endl;
+		cout << "Error: username must have more than three symbols" << endl;
+	}
+	else if(!isalpha(userName[0]) || !isalpha(password[0]))
+	{
+		CLS;
+		cout << "Error: first symbol of username and password must be a letter" << endl;
+	}
+	else if(password.size() <= 3)
+	{
+		CLS;
+		cout << "Error: password is too short" << endl;
 	}
 	else
 	{
-		CLS;
-		cout << "Error: User with username " << userName << " already exists" << endl;
+		bool isCreated = true;
+	
+		for (int i = 0; i < allUsers.size(); i++)
+		{
+			if (userName == allUsers[i].getUserName())
+			{
+				isCreated = false;
+				break;
+			}
+		}
+
+		if (isCreated == true)
+		{
+			User newUser(userName, password);
+	
+			//TODO newUser
+	
+			allUsers.push_back(newUser);
+	
+			CLS;
+			cout << "Your account has been created" << endl;
+		}
+		else
+		{
+			CLS;
+			cout << "Error: User with username " << userName << " already exists" << endl;
+		}
 	}
 }
 
@@ -805,7 +823,7 @@ void printRemoveMenu(User& currentUser, vector<Event>& currentUserEvents)
 void printMainMenu()
 {
 	printH("Welcome");
-	printM("To start working you need to sign in of sign up");
+	printM("To start working you need to sign in or sign up");
 
 	print("Option list:");
 	print(" 1 - Sign in");
