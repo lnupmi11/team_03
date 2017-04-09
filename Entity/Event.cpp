@@ -91,6 +91,11 @@ void Event::addPopularityUsers(string currentUser)
 	this->popularityUsers.push_back(currentUser);
 }
 
+void Event::addPopularityUsers(vector<string> users)
+{
+	this->popularityUsers = users;
+}
+
 void Event::setPriority(Priorities priority)
 {
 	this->priority = priority;

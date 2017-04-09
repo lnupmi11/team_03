@@ -606,6 +606,7 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 		cout << "Plot:" << endl;
 		cout << " " << globalEvent.getPlot() << endl;
 		cout << "Popularity: " << globalEvent.getPopularity() << endl;
+		printRateUsers(globalEvent);
 		for (int i = 0; i < globalEvent.getComments().size(); i++)
 		{
 			cout << "Comments:" << endl;
@@ -881,15 +882,44 @@ bool quit()
 	}
 }
 
-bool checkUser(Event& currentEvent, User& currentUser)
+void deleteRateUser(Event& currentEvent, User& currentUser, char rate)
+{
+	string user;
+	int position = -1;
+	vector<string> tempUsersVector;
+
+	tempUsersVector = currentEvent.getPopularityUsers();
+	user = rate + currentUser.getUserName();
+	for (int i = 0; i < currentEvent.getPopularityUsers().size(); i++)
+	{
+		if (user == currentEvent.getPopularityUsers()[i])
+		{
+			position = i;
+			break;
+		}
+	}
+	if (position >= 0)
+	{
+		tempUsersVector.erase(tempUsersVector.begin() + position);
+		currentEvent.addPopularityUsers(tempUsersVector);
+	}
+}
+
+bool checkUser(Event& currentEvent, User& currentUser, char rate)
 {
 	bool check = true;
+	string user;
 
 	for (int i = 0; i < currentEvent.getPopularityUsers().size(); i++)
 	{
-		if (currentUser.getUserName() == currentEvent.getPopularityUsers()[i])
+		user = currentEvent.getPopularityUsers()[i];
+		if (user[0] == rate)
 		{
-			check = false;
+			user.erase(user.begin());
+			if (currentUser.getUserName() == user)
+			{
+				check = false;
+			}
 		}
 	}
 
@@ -898,28 +928,48 @@ bool checkUser(Event& currentEvent, User& currentUser)
 
 void like(Event& currentEvent, User& currentUser)
 {
-	if (checkUser(currentEvent, currentUser))
+	if (checkUser(currentEvent, currentUser, '1'))
 	{
-		currentEvent.setPopularity(currentEvent.getPopularity() + 1);
-		currentEvent.addPopularityUsers(currentUser.getUserName());
-		CLS;
-		cout << "You liked this event" << endl;
+		if (!checkUser(currentEvent, currentUser, '0') && currentEvent.getPopularityUsers().size() != 0)
+		{
+			currentEvent.setPopularity(currentEvent.getPopularity() + 1);
+			deleteRateUser(currentEvent, currentUser, '0');
+			CLS;
+			cout << "You liked this event" << endl;
+		}
+		else
+		{
+			currentEvent.setPopularity(currentEvent.getPopularity() + 1);
+			currentEvent.addPopularityUsers('1' + currentUser.getUserName());
+			CLS;
+			cout << "You liked this event" << endl;
+		}
 	}
 	else
 	{
 		CLS;
-		cout << "You've already rated this event" << endl;
+		cout << "You have already rated this event" << endl;
 	}
 }
 
 void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, vector<Event>& currentUserEvents)
 {
-	if (checkUser(currentEvent, currentUser))
+	if (checkUser(currentEvent, currentUser,'0'))
 	{
-		currentEvent.setPopularity(currentEvent.getPopularity() - 1);
-		currentEvent.addPopularityUsers(currentUser.getUserName());
-		CLS;
-		cout << "You disliked this event" << endl;
+		if (!checkUser(currentEvent, currentUser, '1') && currentEvent.getPopularityUsers().size() != 0)
+		{
+			currentEvent.setPopularity(currentEvent.getPopularity() - 1);
+			deleteRateUser(currentEvent, currentUser, '1');
+			CLS;
+			cout << "You liked this event" << endl;
+		}
+		else
+		{
+			currentEvent.setPopularity(currentEvent.getPopularity() - 1);
+			currentEvent.addPopularityUsers('0' + currentUser.getUserName());
+			CLS;
+			cout << "You disliked this event" << endl;
+		}
 	}
 	else
 	{
@@ -933,6 +983,34 @@ void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, v
 	}
 }
 
+void printRateUsers(Event& currentEvent)
+{
+	if (currentEvent.getPopularityUsers().size() == 0)
+	{
+		cout << "Nobody rated this event." << endl;
+	}
+	if (currentEvent.getPopularityUsers().size() == 1)
+	{
+		string lastUser;
+
+		lastUser = currentEvent.getPopularityUsers()[currentEvent.getPopularityUsers().size() - 1];
+		lastUser.erase(lastUser.begin());
+
+		cout << "/ " << lastUser << " \\" << endl;
+	}
+	if (currentEvent.getPopularityUsers().size() >= 2)
+	{
+		string lastUser;
+		string preLastUser;
+
+		lastUser = currentEvent.getPopularityUsers()[currentEvent.getPopularityUsers().size() - 1];
+		lastUser.erase(lastUser.begin());
+		preLastUser = currentEvent.getPopularityUsers()[currentEvent.getPopularityUsers().size() - 2];
+		preLastUser.erase(preLastUser.begin());
+
+		cout << "/ " << lastUser << " , " << preLastUser << " \\" << endl;
+	}
+}
 bool deleteUserAccount(vector<User>& allUsers, User& currentUser)
 {
 	CLS;

@@ -57,6 +57,8 @@ public:
 
 	void addPopularityUsers(string currentUser);
 
+	void addPopularityUsers(vector<string> users);
+
 	void setPriority(Priorities priority);
 
 	void addComment(Comment newComment);
