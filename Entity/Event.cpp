@@ -14,6 +14,7 @@ Event::Event(string title, string plot, string shortPlot, string date, Prioritie
 	this->date = date;
 	this->priority = priority;
 	this->author = author;
+	this->popularity = 0;
 }
 
 string Event::getAuthor()
