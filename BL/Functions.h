@@ -25,11 +25,19 @@ void printRemoveMenu(User& currentUser, vector<Event>& currentUserEvents);
 
 // info:
 // Prints menu for all event.
-void printPageEventMenu();
+void printPageEventMenu(int value);
+
+// info:
+// Prints start menu.
+void printStartMenu(int value);
 
 // info:
 // Prints main menu.
-void printMainMenu();
+void printMainMenu(int value);
+
+//info:
+// Prints event menu.
+void printEventMenu(Event& currentEvent, int value);
 
 // info:
 // Prints title and plot of chosen event.
@@ -45,7 +53,7 @@ int userEventsMenu(User& currentUser, vector<Event>& currentUserEvents);
 
 // info:
 // Prints three events on one page.
-void printPageWithEvents(int pageNumber, vector<Event>& allEvents);
+void printPageWithEvents(int pageNumber, vector<Event>& allEvents, int value);
 
 // info:
 // Option menu of all events.
@@ -110,3 +118,7 @@ void printRateUsers(Event& currentEvent);
 // info:
 // Deleting of existing user.
 bool deleteUserAccount(vector<User>& allUsers, User& currentUser);
+
+// info:
+// Sw
+int keySwitch(int startValue, int maxValue, int leftValue, int rightValue);

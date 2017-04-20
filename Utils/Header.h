@@ -6,6 +6,7 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
+#include <conio.h>
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
