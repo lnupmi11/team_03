@@ -14,6 +14,7 @@ Event::Event(string title, string plot, string shortPlot, string date, Prioritie
 	this->date = date;
 	this->priority = priority;
 	this->author = author;
+	this->popularity = 0;
 }
 
 string Event::getAuthor()
@@ -104,6 +105,23 @@ void Event::setPriority(Priorities priority)
 void Event::addComment(Comment newComment)
 {
 	this->comments.push_back(newComment);
+}
+
+void Event::setComment(Comment newComment)
+{
+	for (int i = 0; i < comments.size(); i++)
+	{
+		if (comments[i] == newComment);
+		{
+			comments[i] = newComment;
+			break;
+		}
+	}
+}
+
+void Event::setComments(vector<Comment> comments)
+{
+	this->comments = comments;
 }
 
 void Event::removeComment(int number)

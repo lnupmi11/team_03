@@ -717,13 +717,12 @@ void addComment(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 
 bool deleteComment(User& currentUser, Event& globalEvent, vector<Event>& currentUserEvents)
 {
-	cout << "Enter number of comment you want to delete (1 - " << globalEvent.getComments().size() << ")" << endl;
-
 	int number;
 	string input;
 
 	while (true)
 	{
+		cout << "Enter number of comment you want to delete (1 - " << globalEvent.getComments().size() << ")" << endl;
 		cout << "Number > ";
 		cin >> input;
 		number = inputToInt(input);
@@ -955,21 +954,17 @@ void like(Event& currentEvent, User& currentUser)
 		{
 			currentEvent.setPopularity(currentEvent.getPopularity() + 1);
 			deleteRateUser(currentEvent, currentUser, '0');
-			CLS;
-			cout << "You liked this event" << endl;
 		}
 		else
 		{
 			currentEvent.setPopularity(currentEvent.getPopularity() + 1);
 			currentEvent.addPopularityUsers('1' + currentUser.getUserName());
-			CLS;
-			cout << "You liked this event" << endl;
 		}
 	}
 	else
 	{
 		CLS;
-		alert("Incorrect option!");
+		alert("You have already liked this event");
 		system("pause");
 	}
 }
@@ -982,26 +977,25 @@ void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, v
 		{
 			currentEvent.setPopularity(currentEvent.getPopularity() - 1);
 			deleteRateUser(currentEvent, currentUser, '1');
-			CLS;
-			cout << "You liked this event" << endl;
 		}
 		else
 		{
 			currentEvent.setPopularity(currentEvent.getPopularity() - 1);
 			currentEvent.addPopularityUsers('0' + currentUser.getUserName());
-			CLS;
-			cout << "You disliked this event" << endl;
 		}
 	}
 	else
 	{
 		CLS;
-		cout << "You have already rated this event" << endl;
+		alert("You have already disliked this event");
+		system("pause");
 	}
 	if (currentEvent.getPopularity() == -2)
 	{
 		removeCurrentEvent(allEvents, currentEvent, currentUserEvents);
-		cout << "Sorry, but the event was deleted, 'cause of a bad popularity" << endl;
+		CLS;
+		alert("Sorry, but the event was deleted, 'cause of a bad popularity");
+		system("pause");
 	}
 }
 
