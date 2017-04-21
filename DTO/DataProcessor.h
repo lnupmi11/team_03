@@ -8,7 +8,7 @@ class DataProcessor
 public:
 	//info:
 	//	Constructor to set filename and encoding (none or Caesar)
-	DataProcessor(string name, bool encode);
+	DataProcessor(string name, bool encode = false);
 
 	string const getData() const;
 	void setData(string data);

@@ -4,9 +4,18 @@
 using namespace std;
 
 
-Event::Event() : popularity(0) {}
+Event::Event() 
+{
+	this->title = "";
+	this->plot = "";
+	this->shortPlot = "";
+	this->date = "";
+	this->priority = Priority::low;
+	this->author = "";
+	this->popularity = 0;
+}
 
-Event::Event(string title, string plot, string shortPlot, string date, Priorities priority, string author)
+Event::Event(string title, string plot, string shortPlot, string date, Priority priority, string author)
 {
 	this->title = title;
 	this->plot = plot;
@@ -52,7 +61,7 @@ vector<string> Event::getPopularityUsers()
 	return this->popularityUsers;
 }
 
-Priorities Event::getPriority()
+Priority Event::getPriority()
 {
 	return this->priority;
 }
@@ -89,6 +98,7 @@ void Event::setPopularity(int popularity)
 
 void Event::addPopularityUsers(string currentUser)
 {
+
 	this->popularityUsers.push_back(currentUser);
 }
 
@@ -97,7 +107,8 @@ void Event::addPopularityUsers(vector<string> users)
 	this->popularityUsers = users;
 }
 
-void Event::setPriority(Priorities priority)
+
+void Event::setPriority(Priority priority)
 {
 	this->priority = priority;
 }
@@ -191,6 +202,18 @@ ostream& operator << (ostream& output, Event& event)
 
 bool Event::operator== (const Event& rightVal)
 {
+	/* possible solution with one out point
+	bool result = true;
+	result &= this->title != rightVal.title;
+	result &= this->date != rightVal.date;
+	result &= this->plot != rightVal.plot;
+	result &= this->shortPlot != rightVal.shortPlot;
+	result &= this->author != rightVal.author;
+	result &= this->popularity != rightVal.popularity;
+	result &= this->priority != rightVal.priority;
+
+	return result;
+	*/
 	if (this->title != rightVal.title)
 	{
 		return false;
