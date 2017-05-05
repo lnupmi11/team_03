@@ -52,6 +52,21 @@ int main()
 
 	addEventsRespectively(allUsers, allEvents);
 
+<<<<<<< HEAD
+	for (int i = 0; i < allUsers.size(); i++)
+	{
+		for (int j = 0; j < allEvents.size(); j++)
+		{
+			if (allUsers[i].getUserName() == allEvents[j].getAuthor())
+			{
+				allUsers[i].setPosts(allEvents[j]);
+			}
+		}
+	}
+
+	mainMenu(allUsers, allEvents);
+	CLS;
+=======
 	
 	mainMenu(allUsers, allEvents);
 	
@@ -60,6 +75,7 @@ int main()
 	dataProcEvents.setData(composeFromList(allEvents));
 	
 	system("pause");
+>>>>>>> 7d5d5b385344db76c9a8bfec1092de14c1610f39
 	return 0;
 }
 

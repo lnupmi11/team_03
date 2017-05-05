@@ -1,5 +1,9 @@
 CC = g++
+<<<<<<< HEAD
+CFLAGS  = -g -std=c++0x -Wall -Wno-sign-compare -Wextra -Wformat -Wformat-security -Wpedantic 
+=======
 CFLAGS  = -std=c++11 -g -Wall -Wno-sign-compare -Wextra -Wformat -Wformat-security -Wpedantic 
+>>>>>>> 7d5d5b385344db76c9a8bfec1092de14c1610f39
 
 default: bin/start
 
