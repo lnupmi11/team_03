@@ -6,7 +6,7 @@ vector<User> parseUsersToList(string data)
 	vector<string> splited = split("~~~User~~~", data);
 	if (splited.size() >= 1 && splited[0].size() != 0)
 	{
-		for each (auto part in splited)
+		for (auto&& part : splited)
 		{
 			result.push_back(parseUser(part));
 		}
@@ -20,7 +20,7 @@ vector<Event> parseEventsToList(string data)
 	vector<string> splited = split("~~~Event~~~", data);
 	if (splited.size() >= 1 && splited[0].size() != 0)
 	{
-		for each (auto part in splited)
+		for (auto part : splited)
 		{
 			result.push_back(parseEvent(part));
 		}
@@ -64,7 +64,7 @@ Event parseEvent(string data)
 		popul = 0;
 	}
 	result.setPopularity(popul);
-	for each (string part in split("|||subfield|||", args[7]))
+	for (string part : split("|||subfield|||", args[7]))
 	{
 		result.addPopularityUsers(part);
 	}

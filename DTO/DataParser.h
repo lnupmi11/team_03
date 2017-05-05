@@ -8,21 +8,7 @@ vector<User> parseUsersToList(string data);
 
 vector<Event> parseEventsToList(string data);
 
-template <typename T>
-string composeFromList(vector<T> items)
-{
-	string result = "";
-	if (items.size() > 0)
-	{
-		string delim = ("~~~" + split(" ", typeid(T()).name())[1] + "~~~");
-		for (size_t i = 0; i < items.size() - 1; i++)
-		{
-			result += compose(items[i]) + delim;
-		}
-		result += compose(items[items.size() - 1]);
-	}
-	return result;
-}
+vector<string> split(const string& delim, const string& toSplit);
 
 string compose(vector<string> items);
 
@@ -38,7 +24,21 @@ string compose(Event event);
 
 string compose(Comment comment);
 
-vector<string> split(const string& delim, const string& toSplit);
-
-
 void addEventsRespectively(vector<User>& allUsers, vector<Event>& allEvents);
+
+template <typename T>
+string composeFromList(vector<T> items)
+{
+	string result = "";
+	if (items.size() > 0)
+	{
+		string name = typeid(T()).name();
+		string delim = ("~~~" + split(" ", name)[1]  + "~~~");
+		for (size_t i = 0; i < items.size() - 1; i++)
+		{
+			result += compose(items[i]) + delim;
+		}
+		result += compose(items[items.size() - 1]);
+	}
+	return result;
+}

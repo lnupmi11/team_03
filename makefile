@@ -1,21 +1,20 @@
 CC = g++
-<<<<<<< HEAD
-CFLAGS  = -g -std=c++0x -Wall -Wno-sign-compare -Wextra -Wformat -Wformat-security -Wpedantic 
-=======
-CFLAGS  = -std=c++11 -g -Wall -Wno-sign-compare -Wextra -Wformat -Wformat-security -Wpedantic 
->>>>>>> 7d5d5b385344db76c9a8bfec1092de14c1610f39
+CFLAGS  = -g -std=c++11 -Wall -Wno-sign-compare -Wextra -Wformat -Wformat-security -Wpedantic
 
 default: bin/start
 
-bin/start: Main.o User.o Event.o Comment.o Functions.o NiceOut.o #DataParser.o 
-	$(CC) $(CFLAGS) -o bin/start Main.o User.o Event.o Comment.o Functions.o NiceOut.o
+bin/start: Main.o User.o Event.o Comment.o Functions.o NiceOut.o DataParser.o DataProcessor.o 
+	$(CC) $(CFLAGS) -o bin/start Main.o User.o Event.o Comment.o Functions.o NiceOut.o DataProcessor.o DataParser.o
 	$(RM) *.o *~
 
-Main.o: Main.cpp Utils/NiceOut.h Utils/Header.h Entity/User.h Entity/Event.h Entity/Comment.h #DTO/DataParser.h 
+Main.o: Main.cpp Utils/NiceOut.h Utils/Header.h Entity/User.h Entity/Event.h Entity/Comment.h DTO/DataParser.h DTO/DataProcessor.h 
 	$(CC) $(CFLAGS) -c Main.cpp
 
-#DataParser.o: DTO/DataParser.cpp DTO/DataParser.h Entity/User.h
-#	$(CC) $(CFLAGS) -c DTO/DataParser.cpp
+DataParser.o: DTO/DataParser.cpp DTO/DataParser.h
+	$(CC) $(CFLAGS) -c DTO/DataParser.cpp
+
+DataProcessor.o: DTO/DataProcessor.cpp DTO/DataProcessor.h Entity/User.h
+	$(CC) $(CFLAGS) -c DTO/DataProcessor.cpp
 
 User.o: Entity/User.cpp Entity/User.h Entity/Event.h Utils/Header.h 
 	$(CC) $(CFLAGS) -c Entity/User.cpp

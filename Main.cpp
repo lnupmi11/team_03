@@ -43,8 +43,8 @@ int main()
 	vector<User> allUsers;
 	vector<Event> allEvents;
 	
-	DataProcessor dataProcUsers("../data/users.dat");
-	DataProcessor dataProcEvents("../data/events.dat");
+	DataProcessor dataProcUsers("data/users.dat");
+	DataProcessor dataProcEvents("data/events.dat");
 	allUsers = parseUsersToList(dataProcUsers.getData());
 	allEvents = parseEventsToList(dataProcEvents.getData());
 	
@@ -52,7 +52,6 @@ int main()
 
 	addEventsRespectively(allUsers, allEvents);
 
-<<<<<<< HEAD
 	for (int i = 0; i < allUsers.size(); i++)
 	{
 		for (int j = 0; j < allEvents.size(); j++)
@@ -65,17 +64,13 @@ int main()
 	}
 
 	mainMenu(allUsers, allEvents);
-	CLS;
-=======
-	
-	mainMenu(allUsers, allEvents);
 	
 	
 	dataProcUsers.setData(composeFromList(allUsers));
 	dataProcEvents.setData(composeFromList(allEvents));
 	
 	system("pause");
->>>>>>> 7d5d5b385344db76c9a8bfec1092de14c1610f39
+	CLS;
 	return 0;
 }
 
