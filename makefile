@@ -4,6 +4,7 @@ CFLAGS  = -g -std=c++11 -Wall -Wno-sign-compare -Wextra -Wformat -Wformat-securi
 default: bin/start
 
 bin/start: Main.o User.o Event.o Comment.o Functions.o NiceOut.o DataParser.o DataProcessor.o 
+	if [ ! -d "bin" ]; then mkdir bin; fi
 	$(CC) $(CFLAGS) -o bin/start Main.o User.o Event.o Comment.o Functions.o NiceOut.o DataProcessor.o DataParser.o
 	$(RM) *.o *~
 
