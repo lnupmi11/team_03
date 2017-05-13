@@ -52,24 +52,12 @@ int main()
 
 	addEventsRespectively(allUsers, allEvents);
 
-	for (int i = 0; i < allUsers.size(); i++)
-	{
-		for (int j = 0; j < allEvents.size(); j++)
-		{
-			if (allUsers[i].getUserName() == allEvents[j].getAuthor())
-			{
-				allUsers[i].setPosts(allEvents[j]);
-			}
-		}
-	}
-
 	mainMenu(allUsers, allEvents);
 	
 	
 	dataProcUsers.setData(composeFromList(allUsers));
 	dataProcEvents.setData(composeFromList(allEvents));
 	
-	system("pause");
 	CLS;
 	return 0;
 }

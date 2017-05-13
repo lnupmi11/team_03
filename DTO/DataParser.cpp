@@ -68,12 +68,12 @@ Event parseEvent(string data)
 	{
 		result.addPopularityUsers(part);
 	}
-	/*
-	for each (string part in split("%%%COMMENT%%%", args[8]))
+	
+	for (string part : split("~~~COMMENT~~~", args[8]))
 	{
 		result.addComment(parseComment(part));
 	}
-	*/
+	
 	return result;
 }
 
