@@ -14,11 +14,15 @@ default: bin/start bin/test
 
 bin/start: Main.o User.o Event.o Comment.o Functions.o NiceOut.o DataParser.o DataProcessor.o 
 	if [ ! -d bin ]; then mkdir bin; fi
-	$(CC) $(CFLAGS) -o bin/start Main.o User.o Event.o Comment.o Functions.o NiceOut.o DataProcessor.o DataParser.o
+	$(CC) $(CFLAGS) -o bin/start Main.o \
+		User.o Event.o Comment.o Functions.o \
+		NiceOut.o DataProcessor.o DataParser.o
 
 bin/test: $(TEST_OBJ) User.o Event.o Comment.o Functions.o NiceOut.o DataParser.o DataProcessor.o 
 	if [ ! -d bin ]; then mkdir bin; fi
-	$(CC) $(CFLAGS) $(GTEST_INCLUDE) $(GTEST_LIB) -o bin/test $(TEST_OBJ) User.o Event.o Comment.o Functions.o NiceOut.o DataProcessor.o DataParser.o 
+	$(CC) $(CFLAGS) $(GTEST_INCLUDE) -o bin/test\
+		$(TEST_OBJ) User.o Event.o Comment.o 	Functions.o \
+		NiceOut.o DataProcessor.o DataParser.o $(GTEST_LIB)
 
 Main.o: Main.cpp Utils/NiceOut.h Utils/Header.h Entity/User.h Entity/Event.h Entity/Comment.h DTO/DataParser.h DTO/DataProcessor.h 
 	$(CC) $(CFLAGS) -c Main.cpp
