@@ -105,9 +105,16 @@ void likeEvent(Event& currentEvent, User& currentUser);
 
 
 // info:
-// Lile the comment.
+// Like the comment.
 void likeComment(Event& currentEvent, Comment& currentComment, User& currentUser);
 
+// info:
+// Dislike Event.
+void dislikeEvent(Event& currentEvent, User& currentUser, vector<Event>& allEvents, vector<Event>& currentUserEvents);
+
+// info:
+// Dislike Comment.
+//TODO void dislikeComment
 
 // info:
 // Print last user who rated this event

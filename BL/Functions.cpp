@@ -376,7 +376,7 @@ void createEvent(User& currentUser, vector<Event>& currentUserEvents, vector<Eve
 	string date;
 	string plot;
 	string shortPlot;
-	Priorities priority;
+	Priority priority;
 
 	cout << "User: " << currentUser.getUserName() << endl;
 	cout << "Creation of new event" << endl;
@@ -442,7 +442,7 @@ void updateEvent(User& currentUser, vector<Event>& currentUserEvents, vector<Eve
 	string date;
 	string plot;
 	string shortPlot;
-	Priorities priority;
+	Priority priority;
 
 	cout << "User: " << currentUser.getUserName() << endl;
 	cout << "Updating of your event" << endl;
@@ -618,9 +618,9 @@ void removeCurrentComment(Event& globalEvent, Comment& globalComment)
 
 int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUserEvents, vector<Event>& allEvents, vector<User>& allUsers)
 {
-	CLS;
 	while (true)
 	{
+		CLS;
 		cout << "Title: " << globalEvent.getTitle() << endl;
 		cout << "Plot:" << endl;
 		cout << " " << globalEvent.getPlot() << endl;
@@ -642,8 +642,8 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 		cout << "2 - remove comment" << endl;
 		cout << "3 - like the event" << endl;
 		cout << "4 - dislike the event" << endl;
-		cout << "5 - like the comment (number of coment + 5)" << endl;
-		cout << "6 - dislike the comment (number of coment + 6)" << endl;
+		cout << "5 - like the comment (" << globalEvent.getComments().size()<<" + 5)" << endl;
+		cout << "6 - dislike the comment (" << globalEvent.getComments().size() << " + 6)" << endl;
 		cout << "7 - back to list" << endl;
 		cout << " Option > ";
 		cin >> input;
@@ -683,7 +683,10 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 			dislikeEvent(globalEvent, currentUser, allEvents, currentUserEvents);
 			break;
 		case 15:case 25:case 35:case 45:
-			likeComment(globalEvent, globalEvent.getComments()[option / 10 - 1], currentUser);
+			if ((option / 10)-1 < globalEvent.getComments().size())
+			{
+				likeComment(globalEvent, globalEvent.getComments()[option / 10 - 1], currentUser);
+			}
 			break;	
 		case 7:
 			CLS;
