@@ -9,9 +9,6 @@ using namespace std;
 
 void testing(vector<User> &users, vector<Event> &allEvents)
 {
-	users.clear();
-	allEvents.clear();
-
 	User user1("user1", "user1");
 	User user2("user2", "user2");
 
@@ -54,6 +51,17 @@ int main()
 	testing(allUsers, allEvents);
 
 	addEventsRespectively(allUsers, allEvents);
+
+	for (int i = 0; i < allUsers.size(); i++)
+	{
+		for (int j = 0; j < allEvents.size(); j++)
+		{
+			if (allUsers[i].getUserName() == allEvents[j].getAuthor())
+			{
+				allUsers[i].setPosts(allEvents[j]);
+			}
+		}
+	}
 
 	mainMenu(allUsers, allEvents);
 	

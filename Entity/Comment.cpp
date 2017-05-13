@@ -50,58 +50,6 @@ void Comment::setDate(string date)
 	this->date = date;
 }
 
-void Comment::setPopularity(int popularity)
-{
-	this->popularity = popularity;
-}
-
-vector<string> Comment::getPopularityUsers()
-{
-	return this->popularityUsers;
-}
-
-int Comment::getPopularity()
-{
-	return this->popularity;
-}
-
-void Comment::addPopularityUsers(string currentUser)
-{
-	this->popularityUsers.push_back(currentUser);
-}
-
-void Comment::addPopularityUsers(vector<string> users)
-{
-	this->popularityUsers = users;
-}
-
-bool Comment::operator==(const Comment & rightVal)
-{
-
-	if (this->author != rightVal.author)
-	{
-		return false;
-	}
-	if (this->date != rightVal.date)
-	{
-		return false;
-	}
-	if (this->plotComment != rightVal.plotComment)
-	{
-		return false;
-	}
-	return true;
-}
-
-void Comment::operator=(const Comment& comment)
-{
-	this->author = comment.author;
-	this->plotComment = comment.plotComment;
-	this->date = comment.date;
-	this->popularity = comment.popularity;
-	this->popularityUsers = comment.popularityUsers;
-}
-
 istream & operator >> (istream& input, Comment& comment)
 {
 	cout << "Comment: ";
