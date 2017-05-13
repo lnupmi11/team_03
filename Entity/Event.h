@@ -7,18 +7,19 @@ using namespace std;
 
 enum Priority { low, medium, high };
 
+
 class Event
 {
 private:
-	string title;
-	string date;
-	string plot;
-	string shortPlot;
-	string author;
+	string title;//
+	string date;//
+	string plot;//
+	string shortPlot;//
+	string author;//
 	vector<Comment> comments;
-	int popularity;
-	vector<string> popularityUsers;
-	Priority priority;
+	int popularity;//
+	vector<string> popularityUsers;//
+	Priority priority;//
 public:
 	Event();
 
@@ -61,6 +62,10 @@ public:
 	void setPriority(Priority priority);
 
 	void addComment(Comment newComment);
+
+	void setComment(Comment newComment);
+
+	void setComments(vector<Comment> comments);
 
 	// other
 	void removeComment(int number);

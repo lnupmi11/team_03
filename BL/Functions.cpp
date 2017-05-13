@@ -100,18 +100,18 @@ void signUp(vector<User>& allUsers)
 	cin >> userName;
 	cout << "Enter new password > ";
 	cin >> password;
-	
+
 	if (userName.size() <= 3)
 	{
 		CLS;
 		cout << "Error: username must have more than three symbols" << endl;
 	}
-	else if(!isalpha(userName[0]) || !isalpha(password[0]))
+	else if (!isalpha(userName[0]) || !isalpha(password[0]))
 	{
 		CLS;
 		cout << "Error: first symbol of username and password must be a letter" << endl;
 	}
-	else if(password.size() <= 3)
+	else if (password.size() <= 3)
 	{
 		CLS;
 		cout << "Error: password is too short" << endl;
@@ -119,7 +119,7 @@ void signUp(vector<User>& allUsers)
 	else
 	{
 		bool isCreated = true;
-	
+
 		for (int i = 0; i < allUsers.size(); i++)
 		{
 			if (userName == allUsers[i].getUserName())
@@ -132,11 +132,11 @@ void signUp(vector<User>& allUsers)
 		if (isCreated == true)
 		{
 			User newUser(userName, password);
-	
+
 			//TODO newUser
-	
+
 			allUsers.push_back(newUser);
-	
+
 			CLS;
 			cout << "Your account has been created" << endl;
 		}
@@ -376,7 +376,7 @@ void createEvent(User& currentUser, vector<Event>& currentUserEvents, vector<Eve
 	string date;
 	string plot;
 	string shortPlot;
-	Priority priority;
+	Priorities priority;
 
 	cout << "User: " << currentUser.getUserName() << endl;
 	cout << "Creation of new event" << endl;
@@ -442,7 +442,7 @@ void updateEvent(User& currentUser, vector<Event>& currentUserEvents, vector<Eve
 	string date;
 	string plot;
 	string shortPlot;
-	Priority priority;
+	Priorities priority;
 
 	cout << "User: " << currentUser.getUserName() << endl;
 	cout << "Updating of your event" << endl;
@@ -597,6 +597,25 @@ void removeCurrentEvent(vector<Event>& allEvents, Event& globalEvent, vector<Eve
 	currentUserEvents.erase(currentUserEvents.begin() + position);
 }
 
+void removeCurrentComment(Event& globalEvent, Comment& globalComment)
+{
+	int position;
+	vector<Comment> comments;
+
+	comments = globalEvent.getComments();
+	for (int i = 0; i < comments.size(); i++)
+	{
+		if (globalComment == comments[i])
+		{
+			position = i;
+			break;
+		}
+	}
+	comments.erase(comments.begin() + position);
+	globalEvent.setComments(comments);
+}
+
+
 int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUserEvents, vector<Event>& allEvents, vector<User>& allUsers)
 {
 	CLS;
@@ -611,7 +630,10 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 		{
 			cout << "Comments:" << endl;
 			cout << " " << i + 1 << ":" << endl;
-			cout << globalEvent.getComments()[i] << endl;
+			cout << globalEvent.getComments()[i];
+			cout << "Popularity: ";
+			cout << globalEvent.getComments()[i].getPopularity() << endl;
+			printRateUsersComments(globalEvent.getComments()[i]);
 		}
 		int option;
 		string input;
@@ -620,7 +642,9 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 		cout << "2 - remove comment" << endl;
 		cout << "3 - like the event" << endl;
 		cout << "4 - dislike the event" << endl;
-		cout << "5 - back to list" << endl;
+		cout << "5 - like the comment (number of coment + 5)" << endl;
+		cout << "6 - dislike the comment (number of coment + 6)" << endl;
+		cout << "7 - back to list" << endl;
 		cout << " Option > ";
 		cin >> input;
 		option = inputToInt(input);
@@ -653,12 +677,15 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 			}
 			break;
 		case 3:
-			like(globalEvent, currentUser);
+			likeEvent(globalEvent, currentUser);
 			break;
 		case 4:
-			dislike(globalEvent, currentUser, allEvents, currentUserEvents);
+			dislikeEvent(globalEvent, currentUser, allEvents, currentUserEvents);
 			break;
-		case 5:
+		case 15:case 25:case 35:case 45:
+			likeComment(globalEvent, globalEvent.getComments()[option / 10 - 1], currentUser);
+			break;	
+		case 7:
 			CLS;
 			return 0;
 			break;
@@ -736,7 +763,18 @@ void addComment(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 
 	//TODO create 'newComment'
 }
+bool likeCommentByNumber(User& currentUser, Comment& globalComment, Event& globalEvent, vector<Comment>& currentUserComments)
+{
+	cout << "Enter number of comment you want to like (1 - " << globalEvent.getComments().size() << ")" << endl;
 
+	int number;
+	string input;
+
+	while (true)
+	{
+
+	}
+}
 bool deleteComment(User& currentUser, Event& globalEvent, vector<Event>& currentUserEvents)
 {
 	cout << "Enter number of comment you want to delete (1 - " << globalEvent.getComments().size() << ")" << endl;
@@ -905,7 +943,31 @@ void deleteRateUser(Event& currentEvent, User& currentUser, char rate)
 	}
 }
 
-bool checkUser(Event& currentEvent, User& currentUser, char rate)
+
+void deleteRateUser(Comment& currentComment, User& currentUser, char rate)
+{
+	string user;
+	int position = -1;
+	vector<string> tempUsersVector;
+
+	tempUsersVector = currentComment.getPopularityUsers();
+	user = rate + currentUser.getUserName();
+	for (int i = 0; i < currentComment.getPopularityUsers().size(); i++)
+	{
+		if (user == currentComment.getPopularityUsers()[i])
+		{
+			position = i;
+			break;
+		}
+	}
+	if (position >= 0)
+	{
+		tempUsersVector.erase(tempUsersVector.begin() + position);
+		currentComment.addPopularityUsers(tempUsersVector);
+	}
+}
+
+bool checkUserEvent(Event& currentEvent, User& currentUser, char rate)
 {
 	bool check = true;
 	string user;
@@ -926,11 +988,32 @@ bool checkUser(Event& currentEvent, User& currentUser, char rate)
 	return check;
 }
 
-void like(Event& currentEvent, User& currentUser)
+bool checkUserComment(Comment& currentComment, User& currentUser, char rate)
 {
-	if (checkUser(currentEvent, currentUser, '1'))
+	bool check = true;
+	string user;
+
+	for (int i = 0; i < currentComment.getPopularityUsers().size(); i++)
 	{
-		if (!checkUser(currentEvent, currentUser, '0') && currentEvent.getPopularityUsers().size() != 0)
+		user = currentComment.getPopularityUsers()[i];
+		if (user[0] == rate)
+		{
+			user.erase(user.begin());
+			if (currentUser.getUserName() == user)
+			{
+				check = false;
+			}
+		}
+	}
+
+	return check;
+}
+
+void likeEvent(Event& currentEvent, User& currentUser)
+{
+	if (checkUserEvent(currentEvent, currentUser, '1'))
+	{
+		if (!checkUserEvent(currentEvent, currentUser, '0') && currentEvent.getPopularityUsers().size() != 0)
 		{
 			currentEvent.setPopularity(currentEvent.getPopularity() + 1);
 			deleteRateUser(currentEvent, currentUser, '0');
@@ -952,11 +1035,39 @@ void like(Event& currentEvent, User& currentUser)
 	}
 }
 
-void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, vector<Event>& currentUserEvents)
+void likeComment(Event& currentEvent, Comment& currentComment, User& currentUser)
 {
-	if (checkUser(currentEvent, currentUser,'0'))
+	if (checkUserComment(currentComment, currentUser, '1'))
 	{
-		if (!checkUser(currentEvent, currentUser, '1') && currentEvent.getPopularityUsers().size() != 0)
+		if (!checkUserComment(currentComment, currentUser, '0') && currentComment.getPopularityUsers().size() != 0)
+		{
+			currentComment.setPopularity(currentComment.getPopularity() + 1);
+			deleteRateUser(currentComment, currentUser, '0');
+			currentEvent.setComment(currentComment);
+			CLS;
+			cout << "You liked this comment" << endl;
+		}
+		else
+		{
+			currentComment.setPopularity(currentComment.getPopularity() + 1);
+			currentComment.addPopularityUsers('1' + currentUser.getUserName());
+			currentEvent.setComment(currentComment);
+			CLS;
+			cout << "You liked this comment" << endl;
+		}
+	}
+	else
+	{
+		CLS;
+		cout << "You have already rated this comment" << endl;
+	}
+}
+
+void dislikeEvent(Event& currentEvent, User& currentUser, vector<Event>& allEvents, vector<Event>& currentUserEvents)
+{
+	if (checkUserEvent(currentEvent, currentUser, '0'))
+	{
+		if (!checkUserEvent(currentEvent, currentUser, '1') && currentEvent.getPopularityUsers().size() != 0)
 		{
 			currentEvent.setPopularity(currentEvent.getPopularity() - 1);
 			deleteRateUser(currentEvent, currentUser, '1');
@@ -980,6 +1091,35 @@ void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, v
 	{
 		removeCurrentEvent(allEvents, currentEvent, currentUserEvents);
 		cout << "Sorry, but the event was deleted, 'cause of a bad popularity" << endl;
+	}
+}
+
+void printRateUsersComments(Comment& currentComment)
+{
+	if (currentComment.getPopularityUsers().size() == 0)
+	{
+		cout << "Nobody rated this comment." << endl;
+	}
+	if (currentComment.getPopularityUsers().size() == 1)
+	{
+		string lastUser;
+
+		lastUser = currentComment.getPopularityUsers()[currentComment.getPopularityUsers().size() - 1];
+		lastUser.erase(lastUser.begin());
+
+		cout << "/ " << lastUser << " \\" << endl;
+	}
+	if (currentComment.getPopularityUsers().size() >= 2)
+	{
+		string lastUser;
+		string preLastUser;
+
+		lastUser = currentComment.getPopularityUsers()[currentComment.getPopularityUsers().size() - 1];
+		lastUser.erase(lastUser.begin());
+		preLastUser = currentComment.getPopularityUsers()[currentComment.getPopularityUsers().size() - 2];
+		preLastUser.erase(preLastUser.begin());
+
+		cout << "/ " << lastUser << " , " << preLastUser << " \\" << endl;
 	}
 }
 
@@ -1011,6 +1151,7 @@ void printRateUsers(Event& currentEvent)
 		cout << "/ " << lastUser << " , " << preLastUser << " \\" << endl;
 	}
 }
+
 bool deleteUserAccount(vector<User>& allUsers, User& currentUser)
 {
 	CLS;

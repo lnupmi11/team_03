@@ -89,7 +89,11 @@ bool quit();
 
 // info:
 // check if current user is in list.
-bool checkUser(Event& currentEvent, User& currentUser, char rate);
+bool checkUserEvent(Event& currentEvent, User& currentUser, char rate);
+
+//info:
+//
+bool checkUserComment(Comment& currentComment, User& currentUser, char rate);
 
 // info:
 // Delete user from rated list.
@@ -97,15 +101,21 @@ void deleteRateUser(Event& currentEvent, User& currentUser, char rate);
 
 // info:
 // Like the event.
-void like(Event& currentEvent, User& currentUser);
+void likeEvent(Event& currentEvent, User& currentUser);
+
 
 // info:
-// Dislike the event.
-void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, vector<Event>& currentUserEvents);
+// Lile the comment.
+void likeComment(Event& currentEvent, Comment& currentComment, User& currentUser);
+
 
 // info:
 // Print last user who rated this event
 void printRateUsers(Event& currentEvent);
+
+// info:
+// Print last user who rated this comment
+void printRateUsersComments(Comment& currentComment);
 
 // info:
 // Deleting of existing user.
