@@ -18,7 +18,7 @@ bin/start: Main.o User.o Event.o Comment.o Functions.o NiceOut.o DataParser.o Da
 
 bin/test: $(TEST_OBJ) User.o Event.o Comment.o Functions.o NiceOut.o DataParser.o DataProcessor.o 
 	if [ ! -d bin ]; then mkdir bin; fi
-	$(CC) $(CFLAGS) $(GTEST_INCLUDE) -o bin/test $(TEST_OBJ) User.o Event.o Comment.o Functions.o NiceOut.o DataProcessor.o DataParser.o $(GTEST_LIB)
+	$(CC) $(CFLAGS) $(GTEST_INCLUDE) $(GTEST_LIB) -o bin/test $(TEST_OBJ) User.o Event.o Comment.o Functions.o NiceOut.o DataProcessor.o DataParser.o 
 
 Main.o: Main.cpp Utils/NiceOut.h Utils/Header.h Entity/User.h Entity/Event.h Entity/Comment.h DTO/DataParser.h DTO/DataProcessor.h 
 	$(CC) $(CFLAGS) -c Main.cpp
