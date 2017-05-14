@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include <sstream>
 #include "../BL/Functions.h"
 
 TEST(BLTest, InputToInt)
@@ -33,4 +34,25 @@ TEST(BLTest, DislikeEvent)
 	ASSERT_EQ(testEvent.getPopularity(), 1);
 	dislike(testEvent, testUser, testEventsArr, testUser.getPosts());
 	ASSERT_EQ(testEvent.getPopularity(), 0);
+}
+
+TEST(BLTest, SignUp)
+{
+	vector<User> usersArr;
+	ASSERT_EQ(usersArr.size(), 0);
+	istringstream input1("userLogin1\nuserPassword1\nuserLogin2\nuserPassword2\nuserLogin3\nuserPassword3\nuserLogin3\nuserPassword3");
+	cin.rdbuf(input1.rdbuf());
+	signUp(usersArr);
+	ASSERT_EQ(usersArr.size(), 1);
+	ASSERT_EQ(usersArr[0].getUserName(), "userLogin1");
+	ASSERT_EQ(usersArr[0].getPassword(), "userPassword1");
+	signUp(usersArr);
+	ASSERT_EQ(usersArr.size(), 2);
+	ASSERT_EQ(usersArr[1].getUserName(), "userLogin2");
+	ASSERT_EQ(usersArr[1].getPassword(), "userPassword2");
+	signUp(usersArr);
+	ASSERT_EQ(usersArr.size(), 3);
+	ASSERT_EQ(usersArr[2].getUserName(), "userLogin3");
+	ASSERT_EQ(usersArr[2].getPassword(), "userPassword3");
+	ASSERT_EQ(usersArr.size(), 3);
 }
