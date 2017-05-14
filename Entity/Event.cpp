@@ -130,6 +130,11 @@ void Event::setComment(Comment newComment)
 	}
 }
 
+void Event::setComment(Comment newComment, int position)
+{
+	this->comments[position] = newComment;
+}
+
 void Event::setComments(vector<Comment> comments)
 {
 	this->comments = comments;

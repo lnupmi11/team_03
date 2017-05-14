@@ -22,6 +22,7 @@ int mainMenu(vector<User>& allUsers, vector<Event> & allEvents)
 {
 	int option;
 	int exitOption;
+
 	exitOption = 1;
 
 	while (true)
@@ -164,6 +165,7 @@ int userMenu(User& currentUser, vector<Event>& currentUserEvents, vector<Event>&
 	{
 		int option;
 		int exitOption;
+
 		exitOption = 1;
 
 		//Interface;
@@ -223,6 +225,7 @@ int allEventsMenu(User& currentUser, vector<Event>& allEvents, vector<Event>& cu
 	int pageNumber = 1;
 	int option;
 	int exitOption;
+
 	exitOption = 1;
 
 	while (true)
@@ -293,6 +296,7 @@ int userEventsMenu(User& currentUser, vector<Event>& currentUserEvents)
 
 	int option;
 	int exitOption;
+
 	exitOption = 1;
 
 	while (true)
@@ -593,6 +597,7 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 	{
 		int option;
 		int exitOption;
+
 		exitOption = 1;
 
 		while (exitOption != -1)
@@ -600,7 +605,7 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 			CLS;
 			printEventMenu(globalEvent, exitOption);
 			option = exitOption;
-			exitOption = keySwitch(exitOption, 5, 4, 3);
+			exitOption = keySwitch(exitOption, 7, 4, 3);
 		}
 		switch (option)
 		{
@@ -636,6 +641,27 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 			dislike(globalEvent, currentUser, allEvents, currentUserEvents);
 			break;
 		case 5:
+			if (globalEvent.getComments().size() != 0)
+			{
+				exitOption = 1;
+				while (exitOption != -1)
+				{
+					CLS;
+					printCommentLikeMenu(globalEvent, exitOption);
+					option = exitOption;
+					if (option == 0)
+					{
+						option = 1;
+					}
+					exitOption = keySwitch(exitOption, globalEvent.getComments().size(), 0, 0);
+				}
+				likeComment(globalEvent, globalEvent.getComments()[option - 1], currentUser, (option - 1));
+			}
+			break;
+		case 6:
+			//dislikeComment;
+			break;
+		case 7:
 			CLS;
 			return 0;
 			break;
@@ -649,21 +675,24 @@ int eventReview(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 	return 0;
 }
 
-int userEventReview(Event& currentUserEvent)
+int userEventReview(Event& currentEvent)
 {
 	CLS;
 
-	cout << " Title: " << currentUserEvent.getTitle() << endl;
-	cout << " Plot:" << currentUserEvent.getPlot() << endl;
+	cout << " Title: " << currentEvent.getTitle() << endl;
+	cout << " Plot:" << currentEvent.getPlot() << endl;
 
-	for (int i = 0; i < currentUserEvent.getComments().size(); i++)
+	for (int i = 0; i < currentEvent.getComments().size(); i++)
 	{
 		cout << "Comments:" << endl;
 		cout << " " << i + 1 << ":" << endl;
-		cout << currentUserEvent.getComments()[i] << endl;
+		cout << currentEvent.getComments()[i] << endl;
+		cout << "Popularuty: " << currentEvent.getComments()[i].getPopularity() << endl;
+		printRateUsers(currentEvent.getComments()[i]);
 	}
 
 	int option;
+
 	option = 1;
 
 	while (true)
@@ -760,6 +789,23 @@ bool deleteComment(User& currentUser, Event& globalEvent, vector<Event>& current
 	return true;
 }
 
+void removeCurrentComment(Event& globalEvent, Comment& globalComment)
+{
+	int position;
+	vector<Comment> comments;
+	comments = globalEvent.getComments();
+	for (int i = 0; i < comments.size(); i++)
+	{
+		if (globalComment == comments[i])
+		{
+			position = i;
+			break;
+		}
+	}
+	comments.erase(comments.begin() + position);
+	globalEvent.setComments(comments);
+}
+
 void printPageWithEvents(int pageNumber, vector<Event>& allEvents, int value)
 {
 	int numberOfEvent = 0;
@@ -843,11 +889,14 @@ void printEventMenu(Event& currentEvent,int value)
 	cout << " " << currentEvent.getPlot() << endl;
 	cout << "Popularity: " << currentEvent.getPopularity() << endl;
 	printRateUsers(currentEvent);
+	cout << endl;
+	cout << "Comments:" << endl;
 	for (int i = 0; i < currentEvent.getComments().size(); i++)
 	{
-		cout << "Comments:" << endl;
 		cout << " " << i + 1 << ":" << endl;
-		cout << currentEvent.getComments()[i] << endl;
+		cout << currentEvent.getComments()[i];
+		cout << "Popularuty: " << currentEvent.getComments()[i].getPopularity() << endl;
+		printRateUsers(currentEvent.getComments()[i]);
 	}
 	cout << endl;
 	value == 1 ? cout << "-> 1. add comment" : cout << "   1. add comment" ;
@@ -858,7 +907,45 @@ void printEventMenu(Event& currentEvent,int value)
 	cout << endl;
 	value == 4 ? cout << "-> 4. dislike the event" : cout << "   4. dislike the event";
 	cout << endl;
-	value == 5 ? cout << "-> 5. back to list" : cout << "   5. back to list";
+	value == 5 ? cout << "-> 5. like comment" : cout << "   5. like comment";
+	cout << endl;
+	value == 6 ? cout << "-> 6. dislike comment" : cout << "   6. dislike comment";
+	cout << endl;
+	value == 7 ? cout << "-> 7. back to list" : cout << "   7. back to list";
+	cout << endl;
+}
+
+void printCommentLikeMenu(Event& currentEvent, int value)
+{
+	cout << "Title: " << currentEvent.getTitle() << endl;
+	cout << "Plot:" << endl;
+	cout << " " << currentEvent.getPlot() << endl;
+	cout << "Popularity: " << currentEvent.getPopularity() << endl;
+	printRateUsers(currentEvent);
+	cout << endl;
+	cout << "Comments:" << endl;
+	for (int i = 0; i < currentEvent.getComments().size(); i++)
+	{
+		value == i+1 ? cout << "-> " : cout << "   ";
+		cout << " " << i + 1 << ":" << endl;
+		cout << currentEvent.getComments()[i];
+		cout << "Popularuty: " << currentEvent.getComments()[i].getPopularity() << endl;
+		printRateUsers(currentEvent.getComments()[i]);
+	}
+	cout << endl;
+	cout << "   1. add comment";
+	cout << endl;
+	cout << "   2. remove comment";
+	cout << endl;
+	cout << "   3. like the event";
+	cout << endl;
+	cout << "   4. dislike the event";
+	cout << endl;
+	cout << "   5. like comment";
+	cout << endl;
+	cout << "   6. dislike comment";
+	cout << endl;
+	cout << "   7. back to list";
 	cout << endl;
 }
 
@@ -925,6 +1012,28 @@ void deleteRateUser(Event& currentEvent, User& currentUser, char rate)
 	}
 }
 
+void deleteRateUser(Comment& currentComment, User& currentUser, char rate)
+{
+	string user;
+	int position = -1;
+	vector<string> tempUsersVector;
+	tempUsersVector = currentComment.getPopularityUsers();
+	user = rate + currentUser.getUserName();
+	for (int i = 0; i < currentComment.getPopularityUsers().size(); i++)
+	{
+		if (user == currentComment.getPopularityUsers()[i])
+		{
+			position = i;
+			break;
+		}
+	}
+	if (position >= 0)
+	{
+		tempUsersVector.erase(tempUsersVector.begin() + position);
+		currentComment.addPopularityUsers(tempUsersVector);
+	}
+}
+
 bool checkUser(Event& currentEvent, User& currentUser, char rate)
 {
 	bool check = true;
@@ -943,6 +1052,25 @@ bool checkUser(Event& currentEvent, User& currentUser, char rate)
 		}
 	}
 
+	return check;
+}
+
+bool checkUserComment(Comment& currentComment, User& currentUser, char rate)
+{
+	bool check = true;
+	string user;
+	for (int i = 0; i < currentComment.getPopularityUsers().size(); i++)
+	{
+		user = currentComment.getPopularityUsers()[i];
+		if (user[0] == rate)
+		{
+			user.erase(user.begin());
+			if (currentUser.getUserName() == user)
+			{
+				check = false;
+			}
+		}
+	}
 	return check;
 }
 
@@ -999,11 +1127,39 @@ void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, v
 	}
 }
 
+void likeComment(Event& currentEvent, Comment& currentComment, User& currentUser, int position)
+{
+	if (checkUserComment(currentComment, currentUser, '1'))
+	{
+		if (!checkUserComment(currentComment, currentUser, '0') && currentComment.getPopularityUsers().size() != 0)
+		{
+			currentComment.setPopularity(currentComment.getPopularity() + 1);
+			deleteRateUser(currentComment, currentUser, '0');
+			currentEvent.setComment(currentComment, position);
+			CLS;
+			cout << "You liked this comment" << endl;
+		}
+		else
+		{
+			currentComment.setPopularity(currentComment.getPopularity() + 1);
+			currentComment.addPopularityUsers('1' + currentUser.getUserName());
+			currentEvent.setComment(currentComment, position);
+			CLS;
+			cout << "You liked this comment" << endl;
+		}
+	}
+	else
+	{
+		CLS;
+		cout << "You have already rated this comment" << endl;
+	}
+}
+
 void printRateUsers(Event& currentEvent)
 {
 	if (currentEvent.getPopularityUsers().size() == 0)
 	{
-		cout << "Nobody rated this event." << endl;
+		cout << "Be the First to Like This." << endl;
 	}
 	if (currentEvent.getPopularityUsers().size() == 1)
 	{
@@ -1028,12 +1184,40 @@ void printRateUsers(Event& currentEvent)
 	}
 }
 
+void printRateUsers(Comment& currentComment)
+{
+	if (currentComment.getPopularityUsers().size() == 0)
+	{
+		cout << "Nobody rated this comment." << endl;
+	}
+	if (currentComment.getPopularityUsers().size() == 1)
+	{
+		string lastUser;
+
+		lastUser = currentComment.getPopularityUsers()[currentComment.getPopularityUsers().size() - 1];
+		lastUser.erase(lastUser.begin());
+		cout << "/ " << lastUser << " \\" << endl;
+	}
+	if (currentComment.getPopularityUsers().size() >= 2)
+	{
+		string lastUser;
+		string preLastUser;
+
+		lastUser = currentComment.getPopularityUsers()[currentComment.getPopularityUsers().size() - 1];
+		lastUser.erase(lastUser.begin());
+		preLastUser = currentComment.getPopularityUsers()[currentComment.getPopularityUsers().size() - 2];
+		preLastUser.erase(preLastUser.begin());
+		cout << "/ " << lastUser << " , " << preLastUser << " \\" << endl;
+	}
+}
+
 bool deleteUserAccount(vector<User>& allUsers, User& currentUser)
 {
 	CLS;
 	while (true)
 	{
 		int option;
+
 		option = 1;
 
 		cout << "Deleting account:" << endl << endl;
@@ -1085,7 +1269,6 @@ bool deleteUserAccount(vector<User>& allUsers, User& currentUser)
 	}
 }
 
-
 int keySwitch(int startValue, int maxValue, int leftValue, int rightValue)
 {
 	int switchOption;
@@ -1124,23 +1307,23 @@ int keySwitch(int startValue, int maxValue, int leftValue, int rightValue)
 		return value = -1;
 		//Numbers (1-9);
 	case 49:
-		return 1;
+		return 1 % (maxValue + 1);
 	case 50:
-		return 2;
+		return 2 % (maxValue + 1);
 	case 51:
-		return 3;
+		return 3 % (maxValue + 1);
 	case 52:
-		return 4;
+		return 4 % (maxValue + 1);
 	case 53:
-		return 5;
+		return 5 % (maxValue + 1);
 	case 54:
-		return 6;
+		return 6 % (maxValue + 1);
 	case 55:
-		return 7;
+		return 7 % (maxValue + 1);
 	case 56:
-		return 8;
+		return 8 % (maxValue + 1);
 	case 57:
-		return 9;
+		return 9 % (maxValue + 1);
 		//escape and 0 to return;
 	case 27:case 48:
 		return maxValue;

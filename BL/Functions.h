@@ -19,6 +19,10 @@ void addComment(User& currentUser, Event& globalEvent, vector<Event>& currentUse
 // Delete comment. Can be done only if you are an author.
 bool deleteComment(User& currentUser, Event& globalEvent, vector<Event>& currentUserEvents);
 
+//info:
+// Delete current comment.
+void removeCurrentComment(Event& globalEvent, Comment& globalComment);
+
 // info:
 // Prints menu of removing events.
 void printRemoveMenu(User& currentUser, vector<Event>& currentUserEvents);
@@ -35,9 +39,13 @@ void printStartMenu(int value);
 // Prints main menu.
 void printMainMenu(int value);
 
-//info:
+// info:
 // Prints event menu.
 void printEventMenu(Event& currentEvent, int value);
+
+// info:
+// Print event menu to like comment.
+void printCommentLikeMenu(Event& currentEvent, int value);
 
 // info:
 // Prints title and plot of chosen event.
@@ -104,12 +112,24 @@ bool checkUser(Event& currentEvent, User& currentUser, char rate);
 void deleteRateUser(Event& currentEvent, User& currentUser, char rate);
 
 // info:
+//
+void deleteRateUser(Comment& currentComment, User& currentUser, char rate);
+
+// info:
 // Like the event.
 void like(Event& currentEvent, User& currentUser);
 
 // info:
 // Dislike the event.
 void dislike(Event& currentEvent, User& currentUser, vector<Event>& allEvents, vector<Event>& currentUserEvents);
+
+// info:
+// Like the comment.
+void likeComment(Event& currentEvent, Comment& currentComment, User& currentUser, int position);
+
+//info:
+// Print last user who rated this comment.
+void printRateUsers(Comment& currentComment);
 
 // info:
 // Print last user who rated this event
@@ -120,5 +140,5 @@ void printRateUsers(Event& currentEvent);
 bool deleteUserAccount(vector<User>& allUsers, User& currentUser);
 
 // info:
-// Sw
+// Switch by keyboard.
 int keySwitch(int startValue, int maxValue, int leftValue, int rightValue);

@@ -11,6 +11,8 @@ private:
 	string author;
 	string plotComment;
 	string date;
+	int popularity;
+	vector<string> popularityUsers;
 
 public:
 	Comment();
@@ -24,6 +26,11 @@ public:
 
 	string getDate();
 
+	int getPopularity();
+
+	vector<string> getPopularityUsers();
+
+
 	// setters
 	void setAuthor(string author);
 
@@ -31,8 +38,18 @@ public:
 
 	void setDate(string date);
 
+	void setPopularity(int popularity);
+
+	void addPopularityUsers(string currentUser);
+
+	void addPopularityUsers(vector<string> users);
+
 	// other
 	friend istream& operator >> (istream& input, Comment& comment);
 
 	friend ostream& operator << (ostream& output, Comment& comment);
+
+	bool operator==(const Comment& comment);
+
+	void operator=(const Comment& comment);
 };

@@ -64,6 +64,8 @@ public:
 
 	void setComment(Comment newComment);
 
+	void setComment(Comment newComment, int position);
+
 	void setComments(vector<Comment> comments);
 
 	// other
