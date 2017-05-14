@@ -89,7 +89,7 @@ TEST(BLTest, Events)
 	createEvent(testUser, testUser.getPosts(), eventsArr);
 
 	ASSERT_EQ(testUser.getPosts()[0].getAuthor(), "user1");
-	ASSERT_EQ(testUser.getPosts()[0].getPlot, "plot1");
+	ASSERT_EQ(testUser.getPosts()[0].getPlot(), "plot1");
 	ASSERT_EQ(testUser.getPosts()[0].getPopularity(), 0);
 	ASSERT_EQ(testUser.getPosts()[0].getPriority(), medium);
 	ASSERT_EQ(testUser.getPosts()[0].getShortPlot(), "shortPlot1");
@@ -97,7 +97,7 @@ TEST(BLTest, Events)
 	ASSERT_EQ(testUser.getPosts().size(), 1);
 
 	ASSERT_EQ(eventsArr[0].getAuthor(), "user1");
-	ASSERT_EQ(eventsArr[0].getPlot, "plot1");
+	ASSERT_EQ(eventsArr[0].getPlot(), "plot1");
 	ASSERT_EQ(eventsArr[0].getPopularity(), 0);
 	ASSERT_EQ(eventsArr[0].getPriority(), medium);
 	ASSERT_EQ(eventsArr[0].getShortPlot(), "shortPlot1");
@@ -107,7 +107,7 @@ TEST(BLTest, Events)
 	updateEvent(testUser, testUser.getPosts(), eventsArr);
 	
 	ASSERT_EQ(testUser.getPosts()[0].getAuthor(), "user1");
-	ASSERT_EQ(testUser.getPosts()[0].getPlot, "newPlot1");
+	ASSERT_EQ(testUser.getPosts()[0].getPlot(), "newPlot1");
 	ASSERT_EQ(testUser.getPosts()[0].getPopularity(), 0);
 	ASSERT_EQ(testUser.getPosts()[0].getPriority(), high);
 	ASSERT_EQ(testUser.getPosts()[0].getShortPlot(), "newShortPlot1");
@@ -115,7 +115,7 @@ TEST(BLTest, Events)
 	ASSERT_EQ(testUser.getPosts().size(), 1);
 
 	ASSERT_EQ(eventsArr[0].getAuthor(), "user1");
-	ASSERT_EQ(eventsArr[0].getPlot, "newPlot1");
+	ASSERT_EQ(eventsArr[0].getPlot(), "newPlot1");
 	ASSERT_EQ(eventsArr[0].getPopularity(), 0);
 	ASSERT_EQ(eventsArr[0].getPriority(), high);
 	ASSERT_EQ(eventsArr[0].getShortPlot(), "newShortPlot1");
