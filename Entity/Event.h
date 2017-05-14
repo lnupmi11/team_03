@@ -62,6 +62,10 @@ public:
 
 	void addComment(Comment newComment);
 
+	void setComment(Comment newComment);
+
+	void setComments(vector<Comment> comments);
+
 	// other
 	void removeComment(int number);
 

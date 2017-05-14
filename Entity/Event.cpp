@@ -118,6 +118,23 @@ void Event::addComment(Comment newComment)
 	this->comments.push_back(newComment);
 }
 
+void Event::setComment(Comment newComment)
+{
+	for (int i = 0; i < comments.size(); i++)
+	{
+		if (comments[i] == newComment);
+		{
+			comments[i] = newComment;
+			break;
+		}
+	}
+}
+
+void Event::setComments(vector<Comment> comments)
+{
+	this->comments = comments;
+}
+
 void Event::removeComment(int number)
 {
 	comments.erase(comments.begin() + number);
