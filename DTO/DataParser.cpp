@@ -3,9 +3,13 @@
 vector<User> parseUsersToList(string data)
 {
 	vector<User> result;
-	for each (auto part in split('^', data))
+	vector<string> splited = split("~~~User~~~", data);
+	if (splited.size() >= 1 && splited[0].size() != 0)
 	{
-		result.push_back(parseUser(part));
+		for (auto&& part : splited)
+		{
+			result.push_back(parseUser(part));
+		}
 	}
 	return result;
 }
@@ -13,44 +17,23 @@ vector<User> parseUsersToList(string data)
 vector<Event> parseEventsToList(string data)
 {
 	vector<Event> result;
-	for each (auto part in split('^', data))
+	vector<string> splited = split("~~~Event~~~", data);
+	if (splited.size() >= 1 && splited[0].size() != 0)
 	{
-		result.push_back(parseEvent(part));
+		for (auto part : splited)
+		{
+			result.push_back(parseEvent(part));
+		}
 	}
 	return result;
 }
-
-string composeUsersToList(vector<User> users)
-{
-	string result = "^";
-	for each (auto part in users)
-	{
-		result += composeUser(part) + "^";
-	}
-	return result;
-}
-
-string composeEventsToList(vector<Event> events)
-{
-	string result = "^";
-	for each (auto part in events)
-	{
-		result += composeEvent(part) + "^";
-	}
-	return result;
-}
-
 
 User parseUser(string data)
 {
 	User result;
-	string args[2];
-	size_t iter = 0;
-	for each (string part in split('~', data))
-	{
-		args[iter] = part;
-		iter++;
-	}
+	vector<string> args = split("^^^field^^^", data);
+	if (args.size() != 2)
+		throw invalid_argument("Wrong data");
 	result = User(args[0], args[1]);
 	return result;
 }
@@ -58,102 +41,137 @@ User parseUser(string data)
 Event parseEvent(string data)
 {
 	Event result;
-	vector<string > args = split('~', data);
+	vector<string> args = split("^^^field^^^", data);
+	if (args.size() != 9)
+		throw invalid_argument("Wrong data");
 	size_t priorVal;
 	try {
-		priorVal = (size_t) stoi(args[4]);
+		priorVal = (size_t)stoi(args[4]);
 	}
-	catch(invalid_argument e)
+	catch (invalid_argument e)
 	{
-		priorVal = 0;
+		priorVal = 0U;
 	}
 	priorVal = priorVal < 3 ? priorVal : 0;
-	Priorities prior = (Priorities) priorVal;
+	Priority prior = (Priority)priorVal;
 	result = Event(args[0], args[1], args[2], args[3], prior, args[5]);
-	result.setDate(args[6]);
 	int popul;
 	try {
-		popul = stoi(args[7]);
+		popul = stoi(args[6]);
 	}
 	catch (invalid_argument e)
 	{
 		popul = 0;
 	}
 	result.setPopularity(popul);
-	for each (string part in split('|', args[8]))
+	for (string part : split("|||subfield|||", args[7]))
 	{
-		result.addPopularityUsers(part);//^event^
+		result.addPopularityUsers(part);
 	}
-	for each (string part in split('|', args[8]))
+	
+	for (string part : split("~~~COMMENT~~~", args[8]))
 	{
 		result.addComment(parseComment(part));
 	}
+	
 	return result;
 }
 
 Comment parseComment(string data)
 {
-	Comment result;
-	for each (string part in split('^', data))
+	vector<string> fields = split("|||subfield|||", data);
+	if (fields.size() != 3)
+		throw invalid_argument("Wrong data");
+	Comment result(fields[0], fields[1], fields[2]);
+	return result;
+}
+
+string compose(User user)
+{
+	string result = "", delim = "^^^field^^^";
+	result += user.getUserName();
+	result += delim;
+	result += user.getPassword();
+	return result;
+}
+
+string compose(Event event)
+{
+	string result = "", delim = "^^^field^^^";
+
+	result += event.getTitle();
+	result += delim;
+	result += event.getPlot();
+	result += delim;
+	result += event.getShortPlot();
+	result += delim;
+	result += event.getDate();
+	result += delim;
+	result += to_string((size_t)event.getPriority());
+	result += delim;
+	result += event.getAuthor();
+	result += delim;
+	result += to_string(event.getPopularity());
+	result += delim;
+	result += compose(event.getPopularityUsers());
+	result += delim;
+	result += composeFromList(event.getComments());
+
+	return result;
+}
+
+string compose(Comment comment)
+{
+	string result = "", delim = "|||subfield|||";
+
+	result += comment.getAuthor();
+	result += delim;
+	result += comment.getPlotComment();
+	result += delim;
+	result += comment.getDate();
+
+	return result;
+}
+
+string compose(vector<string> items)
+{
+	string result = "";
+	if (items.size() > 0)
 	{
-		//result.push_back(parseUser(part));
+		string delim = "|||subfield|||";
+		for (size_t i = 0; i < items.size() - 1; i++)
+		{
+			result += items[i] + delim;
+		}
+		result += items[items.size() - 1];
 	}
 	return result;
 }
 
-string composeUser(User user)
-{
-	string result = "";
-	return result;
-}
-
-string composeEvent(Event event)
-{
-	string result = "";
-
-	return result;
-}
-
-string composeComment(Comment event)
-{
-	string result = "";
-
-	return result;
-}
-
-//this function is to be changed (deprecated)
-vector<string> split(char delim, string toSplit)
+vector<string> split(const string& delim, const string& toSplit)
 {
 	vector<string> result = vector<string>();
-	int start = 1, end;
-	for (size_t i = 1; i < toSplit.size(); i++) {
-		if (toSplit[i] == delim) {
-			end = i;
-			result.push_back(string(toSplit, start, end - start));
-			start = i + 1;
-		}
+	int start = 0, end = toSplit.find(delim, start);
+	while (end != -1)
+	{
+		result.push_back(string(toSplit, start, end - start));
+		start = end + delim.size();
+		end = toSplit.find(delim, start);
 	}
+	result.push_back(string(toSplit, start, toSplit.size() - start));
 	return result;
 }
 
-/* this function is future solution
-vector<string> split(string delim, string toSplit)
+void addEventsRespectively(vector<User>& allUsers, vector<Event>& allEvents)
 {
-vector<string> result = vector<string>();
-int start = delim.size(), end;
-for (size_t i = start; i < toSplit.size(); i++) {
-bool match = true;
-while (i - start < delim.size()) {
-
+	for (size_t i = 0; i < allUsers.size(); i++)
+	{
+		for (size_t j = 0; j < allEvents.size(); j++)
+		{
+			if (allUsers[i].getUserName() == allEvents[j].getAuthor())
+			{
+				allUsers[i].setPosts(allEvents[j]);
+			}
+		}
+	}
 }
-end = i;
-result.push_back(string(toSplit, start, end - start));
-start = i + 1;
-}
-return result;
-}
-*/
-/*
-//kbjhbjbk//kjbhjhb//
-
-*/

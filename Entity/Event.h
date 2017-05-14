@@ -5,25 +5,24 @@
 using namespace std;
 
 
-enum Priorities { low, medium, high };
-
+enum Priority { low, medium, high };
 
 class Event
 {
 private:
-	string title;//
-	string date;//
-	string plot;//
-	string shortPlot;//
-	string author;//
+	string title;
+	string date;
+	string plot;
+	string shortPlot;
+	string author;
 	vector<Comment> comments;
-	int popularity;//
-	vector<string> popularityUsers;//
-	Priorities priority;//
+	int popularity;
+	vector<string> popularityUsers;
+	Priority priority;
 public:
 	Event();
 
-	Event(string title, string plot, string shortPlot, string date, Priorities priority, string author);
+	Event(string title, string plot, string shortPlot, string date, Priority priority, string author);
 
 	//getters
 	string getTitle();
@@ -38,7 +37,7 @@ public:
 
 	vector<string> getPopularityUsers();
 
-	Priorities getPriority();
+	Priority getPriority();
 
 	string getAuthor();
 
@@ -59,7 +58,7 @@ public:
 
 	void addPopularityUsers(vector<string> users);
 
-	void setPriority(Priorities priority);
+	void setPriority(Priority priority);
 
 	void addComment(Comment newComment);
 

@@ -362,7 +362,7 @@ void createEvent(User& currentUser, vector<Event>& currentUserEvents, vector<Eve
 	string date;
 	string plot;
 	string shortPlot;
-	Priorities priority;
+	Priority priority;
 
 	cout << "User: " << currentUser.getUserName() << endl;
 	cout << "Creation of new event" << endl;
@@ -428,7 +428,7 @@ void updateEvent(User& currentUser, vector<Event>& currentUserEvents, vector<Eve
 	string date;
 	string plot;
 	string shortPlot;
-	Priorities priority;
+	Priority priority;
 
 	cout << "User: " << currentUser.getUserName() << endl;
 	cout << "Updating of your event" << endl;
